@@ -88,3 +88,11 @@ Check that the script files are in `%APPDATA%\Mp3tag\data\sources\`.
 ## Contact
 
 Questions, issues, or requests — find me on the Mp3tag community forum as **The_Zhu**.
+
+---
+
+## Disclaimer
+
+Mp3tag Proxy is an independent, third-party tool and is not affiliated with or
+endorsed by Mp3tag. Mp3tag is a registered trademark and the exclusive property
+of its holder, as is its logo.
