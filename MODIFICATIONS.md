@@ -101,7 +101,7 @@ AFTER:   ...||http://127.0.0.1:8787/track/tracks/%s
 
 ---
 
-## Traxsource — Beatport · Traxsource · SoundCloud scripts (by Jordi & Claude)
+## Traxsource — Beatport · **Traxsource** · SoundCloud scripts (by Jordi & Claude)
 
 The same pattern applies. In each Traxsource `.inc` file, find `[BasedOn]`
 and `[IndexUrl]` and replace `https://www.traxsource.com` with
