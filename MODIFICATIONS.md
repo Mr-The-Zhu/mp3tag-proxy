@@ -103,27 +103,60 @@ AFTER:   ...||http://127.0.0.1:8787/track/tracks/%s
 
 ## Traxsource — Beatport · **Traxsource** · SoundCloud scripts (by Jordi & Claude)
 
-The same pattern applies. In each Traxsource `.inc` file, find `[BasedOn]`
-and `[IndexUrl]` and replace `https://www.traxsource.com` with
-`http://127.0.0.1:8787`.
+Traxsource needs a different URL form than Beatport. Beatport is the proxy's
+default target, so a bare `http://127.0.0.1:8787/...` is forwarded straight to
+Beatport. Traxsource is **not** the default, so its request URLs must embed the
+full original address after the proxy:
+
+```
+http://127.0.0.1:8787/https://www.traxsource.com/...
+```
+
+### 1. `[BasedOn]` — bare proxy
 
 ```
 BEFORE:  [BasedOn]=https://www.traxsource.com
 AFTER:   [BasedOn]=http://127.0.0.1:8787
-
-BEFORE:  [IndexUrl]=https://www.traxsource.com/...
-AFTER:   [IndexUrl]=http://127.0.0.1:8787/...
 ```
 
-For any "Direct" `.src` files, change the URL template the same way as
-described for Beatport above — replace `https://www.traxsource.com` with
-`http://127.0.0.1:8787` in the third `||` field of `[SearchBy]`.
+### 2. `[IndexUrl]` and `[AlbumUrl]` — embedded form
 
-Also change the `# _URL (REQUIRED FOR PREVIEW BUTTON TO WORK)` line
-in each Search `.inc` if present.
+Keep the rest of the path; just insert the proxy in front of the original URL.
 
-> **Do not touch** `.settings` files or "Search by…" `.src` files
-> that do not contain a direct URL in `[SearchBy]`.
+```
+BEFORE:  [IndexUrl]=https://www.traxsource.com/search/tracks?term=%s
+AFTER:   [IndexUrl]=http://127.0.0.1:8787/https://www.traxsource.com/search/tracks?term=%s
+
+BEFORE:  [AlbumUrl]=https://www.traxsource.com/track/%s
+AFTER:   [AlbumUrl]=http://127.0.0.1:8787/https://www.traxsource.com/track/%s
+```
+
+### 3. Search result `_URL` — embedded form
+
+In each Search `.inc`, inside the output loop, the line that builds the result
+URL prefixes the host with `say`. Embed the proxy there too:
+
+```
+BEFORE:  say "https://www.traxsource.com"
+AFTER:   say "http://127.0.0.1:8787/https://www.traxsource.com"
+```
+
+### 4. Large covers — use `og:image`, not the thumbnail
+
+The TRACK scripts grab the cover from the `tr-image` block, which is only a
+**175×175** thumbnail. Switch them to the `og:image` meta tag, which is the
+full **600×600** cover (the RELEASE scripts already use `og:image`).
+
+In `TRACK Direct by ID.inc` and the `[ParserScriptAlbum]` section of
+`TRACK Search.inc`:
+
+```
+BEFORE:  regexpreplace "<div class=\"tr-image\"><a href=\"[^\"]+\"><img src=\"([^\"]+)\"" "<CoverURL=$1>"
+AFTER:   regexpreplace "<meta property=\"og:image\" content=\"([^\"]+)\">" "<CoverURL=$1>"
+```
+
+> The "Direct" `.src` files for Traxsource take an ID only (no embedded URL),
+> so they need **no** changes. **Do not touch** `.settings` files.
 
 ---
 
