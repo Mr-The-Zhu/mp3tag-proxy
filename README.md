@@ -28,7 +28,7 @@ Place it in any folder (e.g. `C:\Tools\mp3tag_proxy\`).
 **Beatport** — stevehero's Beatport v6 scripts:  
 [community.mp3tag.de › WS Beatport by stevehero](https://community.mp3tag.de/t/ws-beatport-com-by-stevehero-release-single-track-artwork-tagging/12568)
 
-**Beatport · Traxsource · SoundCloud — Updated & Fixed Scripts 2026** (by Jordi & Claude):  
+Beatport · **Traxsource** · SoundCloud — Updated & Fixed Scripts 2026 (by Jordi & Claude):  
 [community.mp3tag.de › WS Beatport · Traxsource · SoundCloud](https://community.mp3tag.de/t/ws-beatport-traxsource-soundcloud-updated-fixed-scripts-2026-by-jordi-claude/71123)
 
 Place all script files into Mp3tag's sources folder:
