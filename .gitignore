@@ -1,0 +1,8 @@
+# No source code in this repository.
+# The executable is distributed via GitHub Releases only.
+*.exe
+*.log
+*.cfg
+*.spec
+build/
+dist/
