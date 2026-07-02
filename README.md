@@ -10,8 +10,9 @@ platforms. It appears as a small icon in the system tray.
 
 ## Requirements
 
-- Windows 10 / 11
-- [Mp3tag v3.26+](https://www.mp3tag.de/)
+- Windows 10 / 11 (includes Microsoft Edge — used to clear Beatport's Cloudflare challenge)
+- [Mp3tag](https://www.mp3tag.de/) — the version your scripts require
+  (stevehero's Beatport v6: **v3.22+**, Traxsource: **v3.26+**)
 - Tag-source scripts for Beatport or Traxsource (see below)
 
 ---
@@ -57,6 +58,12 @@ requests through the proxy.
 3. Right-click the tray icon → **Quit** when done, or leave it running
    (auto-exits after 30 minutes of inactivity).
 
+> **Beatport note:** Beatport is behind a Cloudflare challenge that needs a real
+> browser to pass. The first Beatport request (and occasionally later, when the
+> clearance expires) takes ~5–10 seconds while the proxy quietly uses your system
+> Edge in the background to clear it; everything after that is instant. A brief
+> Edge process may appear and then close itself. **Traxsource is unaffected.**
+
 ---
 
 ## Tray menu
@@ -74,6 +81,10 @@ requests through the proxy.
 
 **403 Forbidden** — proxy isn't running. Double-click `mp3tag_proxy.exe`.
 Also check that no VPN is blocking `127.0.0.1`.
+
+**Beatport is slow on the first request** — that's expected. The proxy is using
+Edge in the background to clear Cloudflare's challenge (~5–10 s); it's cached
+afterwards, so following requests are fast.
 
 **Connection error / no tray icon** — proxy failed to start. Check `proxy.log`
 next to the `.exe`. Port 8787 may be in use by another application.
