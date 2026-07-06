@@ -71,9 +71,15 @@ requests through the proxy.
 | Item | Action |
 |---|---|
 | Auto-exit when idle (30 min) | Toggle idle auto-exit on/off |
+| Check for updates | Toggle the startup version check |
 | Open log | Opens `proxy.log` in your text editor |
 | About | Shows version info |
 | Quit | Shuts down the proxy |
+
+> On startup the proxy checks GitHub for a newer release (version numbers only —
+> nothing personal is sent). If one is available, the About splash shows it and the
+> tray gets an **Update available** item. Turn the check off with the
+> **Check for updates** toggle.
 
 ---
 
