@@ -13,8 +13,6 @@ with `http://127.0.0.1:8787` in specific lines of the script files.
 - Edit **only** the `.inc` files and the "Direct" `.src` files listed below.  
   **Do not touch** `.settings` files — editing them causes errors like  
   `ERROR(Settings): expected value, got 'B' (66)`.
-- Save as **UTF-8 without BOM**. Use Notepad++ (*Encoding → UTF-8 without BOM*)  
-  or VS Code. Classic Notepad may silently add a BOM and corrupt the file.
 - Use targeted find/replace — only change the lines listed here.
 
 ---
