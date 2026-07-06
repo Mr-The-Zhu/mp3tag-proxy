@@ -33,6 +33,13 @@ BEFORE:  [BasedOn]=https://www.beatport.com
 AFTER:   [BasedOn]=http://127.0.0.1:8787
 ```
 
+> **Direct files: change `[BasedOn]` only — do NOT add an `[IndexUrl]` line.**
+> `[IndexUrl]` belongs solely to the *Search* `.inc` files (below). The Direct
+> sources have no index parser, so adding an `[IndexUrl]` makes Mp3tag take the
+> wrong path and return *"no entries matching your search criteria"* (or a
+> connection error). If you see that, check that your Direct `.inc` has no
+> `[IndexUrl]` line.
+
 #### `Beatport by &stevehero v6_Track Search.inc`
 ```
 BEFORE:  [BasedOn]=https://www.beatport.com
