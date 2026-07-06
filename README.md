@@ -42,8 +42,7 @@ Place all script files into Mp3tag's sources folder:
 Apply the small edits described in [MODIFICATIONS.md](MODIFICATIONS.md) to route
 requests through the proxy.
 
-> **Important:** save edited files as **UTF-8 without BOM** (Notepad++ or VS Code).
-> Do not edit `.settings` files.
+> **Important:** do not edit `.settings` files.
 
 ### 4. Restart Mp3tag
 
