@@ -10,7 +10,8 @@ platforms. It appears as a small icon in the system tray.
 
 ## Requirements
 
-- Windows 10 / 11 (includes Microsoft Edge — used to clear Beatport's Cloudflare challenge)
+- Windows 10 / 11 with a Chromium browser — Microsoft Edge (preinstalled),
+  Google Chrome, or Brave — used to clear Beatport's Cloudflare challenge
 - [Mp3tag](https://www.mp3tag.de/) — the version your scripts require
   (stevehero's Beatport v6: **v3.22+**, Traxsource: **v3.26+**)
 - Tag-source scripts for Beatport or Traxsource (see below)
@@ -59,9 +60,10 @@ requests through the proxy.
 
 > **Beatport note:** Beatport is behind a Cloudflare challenge that needs a real
 > browser to pass. The first Beatport request (and occasionally later, when the
-> clearance expires) takes ~5–10 seconds while the proxy quietly uses your system
-> Edge in the background to clear it; everything after that is instant. A brief
-> Edge process may appear and then close itself. **Traxsource is unaffected.**
+> clearance expires) takes ~5–10 seconds while the proxy quietly uses a Chromium
+> browser (Edge, Chrome, or Brave) in the background to clear it — the tray tooltip
+> shows *"solving challenge…"* meanwhile. Everything after that is instant, and the
+> brief browser process closes itself. **Traxsource is unaffected.**
 
 ---
 
