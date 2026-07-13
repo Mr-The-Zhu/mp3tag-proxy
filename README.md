@@ -94,7 +94,13 @@ Edge in the background to clear Cloudflare's challenge (~5–10 s); it's cached
 afterwards, so following requests are fast.
 
 **Connection error / no tray icon** — proxy failed to start. Check `proxy.log`
-next to the `.exe`. Port 8787 may be in use by another application.
+next to the `.exe`. Port 8787 may be in use by another application (see below to
+change it).
+
+**Changing the port** — if 8787 is blocked or taken, create/edit `proxy.cfg` next
+to the `.exe` and add a line like `port=9000`. You must also change the port in
+your **script URLs** (`http://127.0.0.1:9000/…`) to match. Restart the proxy and
+Mp3tag afterwards.
 
 **No results in Mp3tag** — fully exit Mp3tag (File → Exit) and reopen.
 Check that the script files are in `%APPDATA%\Mp3tag\data\sources\`.
