@@ -6,6 +6,9 @@ so they route requests through the local proxy (`mp3tag_proxy.exe`).
 The change is the same in all cases: replace the direct URL to the music platform
 with `http://127.0.0.1:8787` in specific lines of the script files.
 
+> If you changed the proxy's port (via `port=` in `proxy.cfg`), use that port in the
+> URLs below instead of `8787`.
+
 ---
 
 ## Before you edit
