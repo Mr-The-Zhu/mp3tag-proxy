@@ -166,6 +166,20 @@ AFTER:   regexpreplace "<meta property=\"og:image\" content=\"([^\"]+)\">" "<Cov
 > The "Direct" `.src` files for Traxsource take an ID only (no embedded URL),
 > so they need **no** changes. **Do not touch** `.settings` files.
 
+### 5. Track Search — fix broken title/URL match (Traxsource site change)
+
+Traxsource added a small icon inside the track title link on search result pages,
+which breaks the regex that reads the track's title and URL. When this happens,
+the search silently falls back to fetching the Traxsource homepage instead of the
+actual track, giving an empty title and a random mix of unrelated artist names.
+
+In `TRACK Search.inc`, find:
+
+```
+BEFORE:  regexpreplace "<!--DIV title--><a href=\"([^\"]+)\">([^<]+)</a>" "<TrackURL=$1><TrackName=$2>"
+AFTER:   regexpreplace "<!--DIV title--><a href=\"([^\"]+)\">(?:<img[^>]*>)?([^<]+)</a>" "<TrackURL=$1><TrackName=$2>"
+```
+
 ---
 
 ## Files that do not need changes
