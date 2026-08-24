@@ -109,6 +109,21 @@ Check that the script files are in `%APPDATA%\Mp3tag\data\sources\`.
 
 ---
 
+## Security
+
+Some antivirus engines flag `mp3tag_proxy.exe` on generic ML heuristics (e.g.
+Microsoft Defender's `Wacatac.ml`), triggered by behavior the tool genuinely
+does — automating a local browser off-screen to pass Cloudflare, and killing
+its process afterward. This is a known false-positive pattern on PyInstaller-built
+executables; we've verified the published binary's hash matches our build and
+that every bundled dependency is an unmodified copy from PyPI, and filed a false
+positive report with Microsoft.
+
+A [software bill of materials](SBOM.json) (CycloneDX format) lists every
+dependency bundled into the executable, with versions.
+
+---
+
 ## Contact
 
 Questions, issues, or requests — find me on the Mp3tag community forum as **The_Zhu**.
