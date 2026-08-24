@@ -107,6 +107,34 @@ BEFORE:  ...||https://www.beatport.com/track/tracks/%s
 AFTER:   ...||http://127.0.0.1:8787/track/tracks/%s
 ```
 
+### Optional: full-resolution cover art
+
+Beatport's own JSON sometimes gives a small (e.g. 500×500) `image.uri`, even
+though a much larger version exists. There's a second field, `image.dynamic_uri`,
+with a `{w}x{h}` size template you can fill in yourself to always get the full
+1400×1400 version. This affects the `COVERURL` block in **all 5** `.inc` files
+(`Track Direct`, `Track Search`, `Release Direct`, `Release Search`,
+`Artwork Search`). In each, find:
+
+```
+json_select "uri"
+SayRest
+```
+
+Replace with:
+
+```
+json_select "dynamic_uri"
+Replace "{w}" "1400"
+Replace "{h}" "1400"
+SayRest
+```
+
+> Order matters: `Replace` must come **before** `SayRest` — it edits the
+> currently-selected JSON value, not what's already been output. Putting it
+> after `SayRest` leaves the literal `{w}x{h}` in the URL and the cover comes
+> back empty.
+
 ---
 
 ## Traxsource — Beatport · **Traxsource** · SoundCloud scripts (by Jordi & Claude)
