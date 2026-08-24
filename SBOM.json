@@ -1,0 +1,193 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-08-24T08:45:17Z",
+    "component": {
+      "type": "application",
+      "name": "mp3tag_proxy.exe",
+      "version": "2.3.1"
+    },
+    "properties": [
+      {
+        "name": "build-tool",
+        "value": "PyInstaller 6.20.0, --onefile"
+      },
+      {
+        "name": "runtime",
+        "value": "CPython, frozen via PyInstaller"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "curl_cffi",
+      "version": "0.15.0",
+      "purl": "pkg:pypi/curl-cffi@0.15.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "nodriver",
+      "version": "0.50.3",
+      "purl": "pkg:pypi/nodriver@0.50.3",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "websockets",
+      "version": "16.0",
+      "purl": "pkg:pypi/websockets@16.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "mss",
+      "version": "10.2.0",
+      "purl": "pkg:pypi/mss@10.2.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "Deprecated",
+      "version": "1.3.1",
+      "purl": "pkg:pypi/deprecated@1.3.1",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "wrapt",
+      "version": "2.2.2",
+      "purl": "pkg:pypi/wrapt@2.2.2",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "pystray",
+      "version": "0.19.5",
+      "purl": "pkg:pypi/pystray@0.19.5",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "pillow",
+      "version": "12.2.0",
+      "purl": "pkg:pypi/pillow@12.2.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "cffi",
+      "version": "2.0.0",
+      "purl": "pkg:pypi/cffi@2.0.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "pycparser",
+      "version": "3.0",
+      "purl": "pkg:pypi/pycparser@3.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "six",
+      "version": "1.17.0",
+      "purl": "pkg:pypi/six@1.17.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "packaging",
+      "version": "26.2",
+      "purl": "pkg:pypi/packaging@26.2",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "rich",
+      "version": "15.0.0",
+      "purl": "pkg:pypi/rich@15.0.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "Pygments",
+      "version": "2.20.0",
+      "purl": "pkg:pypi/pygments@2.20.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "markdown-it-py",
+      "version": "4.2.0",
+      "purl": "pkg:pypi/markdown-it-py@4.2.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "mdurl",
+      "version": "0.1.2",
+      "purl": "pkg:pypi/mdurl@0.1.2",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "certifi",
+      "version": "2026.4.22",
+      "purl": "pkg:pypi/certifi@2026.4.22",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "name": "pyinstaller",
+      "version": "6.20.0",
+      "purl": "pkg:pypi/pyinstaller@6.20.0",
+      "scope": "excluded"
+    },
+    {
+      "type": "library",
+      "name": "pyinstaller-hooks-contrib",
+      "version": "2026.5",
+      "purl": "pkg:pypi/pyinstaller-hooks-contrib@2026.5",
+      "scope": "excluded"
+    },
+    {
+      "type": "library",
+      "name": "altgraph",
+      "version": "0.17.5",
+      "purl": "pkg:pypi/altgraph@0.17.5",
+      "scope": "excluded"
+    },
+    {
+      "type": "library",
+      "name": "pefile",
+      "version": "2024.8.26",
+      "purl": "pkg:pypi/pefile@2024.8.26",
+      "scope": "excluded"
+    },
+    {
+      "type": "library",
+      "name": "pywin32-ctypes",
+      "version": "0.2.3",
+      "purl": "pkg:pypi/pywin32-ctypes@0.2.3",
+      "scope": "excluded"
+    },
+    {
+      "type": "library",
+      "name": "pip",
+      "version": "23.2.1",
+      "purl": "pkg:pypi/pip@23.2.1",
+      "scope": "excluded"
+    },
+    {
+      "type": "library",
+      "name": "setuptools",
+      "version": "82.0.1",
+      "purl": "pkg:pypi/setuptools@82.0.1",
+      "scope": "excluded"
+    }
+  ]
+}
