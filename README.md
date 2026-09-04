@@ -22,8 +22,9 @@ platforms. It appears as a small icon in the system tray.
 
 ### 1. Download
 
-Get `mp3tag_proxy.exe` from the [Releases](../../releases/latest) page.  
-Place it in any folder (e.g. `C:\Tools\mp3tag_proxy\`).
+Get `mp3tag_proxy.exe` from the [Releases](../../releases/latest) page.
+If you use Beatport, also grab `beatport_scripts_patcher.exe` from the same page.
+Place them in any folder (e.g. `C:\Tools\mp3tag_proxy\`).
 
 ### 2. Install your tag-source scripts
 
@@ -40,8 +41,16 @@ Place all script files into Mp3tag's sources folder:
 
 ### 3. Edit the script files
 
-Apply the small edits described in [MODIFICATIONS.md](MODIFICATIONS.md) to route
-requests through the proxy.
+**Beatport (stevehero's scripts):** run `beatport_scripts_patcher.exe` once.
+It applies every edit those scripts need (proxy routing, full-resolution
+cover art, and the current Beatport JSON fix) automatically, with a backup
+of each file first. The proxy itself will also tell you, on the splash
+screen and in its tray menu, if it later detects these scripts need it
+again.
+
+**Traxsource (Jordi & Claude's scripts):** apply the edits described in
+[MODIFICATIONS.md](MODIFICATIONS.md) by hand, there's no automated tool for
+these yet.
 
 > **Important:** do not edit `.settings` files.
 
