@@ -91,6 +91,12 @@ these yet.
 > tray gets an **Update available** item. Turn the check off with the
 > **Check for updates** toggle.
 
+> The proxy also checks stevehero's Beatport scripts (if installed) on
+> startup. If they need an edit, the splash notes it and the tray gets a
+> **Fix Beatport scripts…** item; clicking either one runs
+> `beatport_scripts_patcher.exe` for you (if it's in the same folder as the
+> proxy). Both stay hidden the rest of the time.
+
 ---
 
 ## Troubleshooting
@@ -125,8 +131,11 @@ Microsoft Defender's `Wacatac.ml`), triggered by behavior the tool genuinely
 does: automating a local browser off-screen to pass Cloudflare, and killing
 its process afterward. This is a known false-positive pattern on PyInstaller-built
 executables; we've verified the published binary's hash matches our build and
-that every bundled dependency is an unmodified copy from PyPI, and filed a false
-positive report with Microsoft.
+that every bundled dependency is an unmodified copy from PyPI. We reported
+this to Microsoft and it's been resolved: Defender no longer flags it. If
+your own install still shows the old result, it's a cached verdict, run
+`MpCmdRun.exe -removedefinitions -dynamicsignatures` followed by
+`MpCmdRun.exe -SignatureUpdate` (as administrator) to clear it.
 
 A [software bill of materials](SBOM.json) (CycloneDX format) lists every
 dependency bundled into the executable, with versions.
