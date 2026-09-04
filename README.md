@@ -10,9 +10,9 @@ platforms. It appears as a small icon in the system tray.
 
 ## Requirements
 
-- Windows 10 / 11 with a Chromium browser — Microsoft Edge (preinstalled),
-  Google Chrome, or Brave — used to clear Beatport's Cloudflare challenge
-- [Mp3tag](https://www.mp3tag.de/) — the version your scripts require
+- Windows 10 / 11 with a Chromium browser: Microsoft Edge (preinstalled),
+  Google Chrome, or Brave, used to clear Beatport's Cloudflare challenge
+- [Mp3tag](https://www.mp3tag.de/), the version your scripts require
   (stevehero's Beatport v6: **v3.22+**, Traxsource: **v3.26+**)
 - Tag-source scripts for Beatport or Traxsource (see below)
 
@@ -27,10 +27,10 @@ Place it in any folder (e.g. `C:\Tools\mp3tag_proxy\`).
 
 ### 2. Install your tag-source scripts
 
-**Beatport** — stevehero's Beatport v6 scripts:  
+**Beatport**: stevehero's Beatport v6 scripts:  
 [community.mp3tag.de › WS Beatport by stevehero](https://community.mp3tag.de/t/ws-beatport-com-by-stevehero-release-single-track-artwork-tagging/12568)
 
-Beatport · **Traxsource** · SoundCloud — Updated & Fixed Scripts 2026 (by Jordi & Claude):  
+Beatport · **Traxsource** · SoundCloud: Updated & Fixed Scripts 2026 (by Jordi & Claude):  
 [community.mp3tag.de › WS Beatport · Traxsource · SoundCloud](https://community.mp3tag.de/t/ws-beatport-traxsource-soundcloud-updated-fixed-scripts-2026-by-jordi-claude/71123)
 
 Place all script files into Mp3tag's sources folder:
@@ -47,21 +47,21 @@ requests through the proxy.
 
 ### 4. Restart Mp3tag
 
-**File → Exit**, then reopen — so Mp3tag reloads the updated scripts.
+**File → Exit**, then reopen, so Mp3tag reloads the updated scripts.
 
 ---
 
 ## Daily use
 
 1. Double-click `mp3tag_proxy.exe`. A tray icon appears near the clock.
-2. Use Mp3tag tag sources as usual — tags are fetched via the proxy.
+2. Use Mp3tag tag sources as usual. Tags are fetched via the proxy.
 3. Right-click the tray icon → **Quit** when done, or leave it running
    (auto-exits after 30 minutes of inactivity).
 
 > **Beatport note:** Beatport is behind a Cloudflare challenge that needs a real
 > browser to pass. The first Beatport request (and occasionally later, when the
 > clearance expires) takes ~5–10 seconds while the proxy quietly uses a Chromium
-> browser (Edge, Chrome, or Brave) in the background to clear it — the tray tooltip
+> browser (Edge, Chrome, or Brave) in the background to clear it. The tray tooltip
 > shows *"solving challenge…"* meanwhile. Everything after that is instant, and the
 > brief browser process closes itself. **Traxsource is unaffected.**
 
@@ -77,7 +77,7 @@ requests through the proxy.
 | About | Shows version info |
 | Quit | Shuts down the proxy |
 
-> On startup the proxy checks GitHub for a newer release (version numbers only —
+> On startup the proxy checks GitHub for a newer release (version numbers only,
 > nothing personal is sent). If one is available, the About splash shows it and the
 > tray gets an **Update available** item. Turn the check off with the
 > **Check for updates** toggle.
@@ -86,26 +86,26 @@ requests through the proxy.
 
 ## Troubleshooting
 
-**403 Forbidden** — proxy isn't running. Double-click `mp3tag_proxy.exe`.
+**403 Forbidden**: proxy isn't running. Double-click `mp3tag_proxy.exe`.
 Also check that no VPN is blocking `127.0.0.1`.
 
-**Beatport is slow on the first request** — that's expected. The proxy is using
+**Beatport is slow on the first request**: that's expected. The proxy is using
 Edge in the background to clear Cloudflare's challenge (~5–10 s); it's cached
 afterwards, so following requests are fast.
 
-**Connection error / no tray icon** — proxy failed to start. Check `proxy.log`
+**Connection error / no tray icon**: proxy failed to start. Check `proxy.log`
 next to the `.exe`. Port 8787 may be in use by another application (see below to
 change it).
 
-**Changing the port** — if 8787 is blocked or taken, create/edit `proxy.cfg` next
+**Changing the port**: if 8787 is blocked or taken, create/edit `proxy.cfg` next
 to the `.exe` and add a line like `port=9000`. You must also change the port in
 your **script URLs** (`http://127.0.0.1:9000/…`) to match. Restart the proxy and
 Mp3tag afterwards.
 
-**No results in Mp3tag** — fully exit Mp3tag (File → Exit) and reopen.
+**No results in Mp3tag**: fully exit Mp3tag (File → Exit) and reopen.
 Check that the script files are in `%APPDATA%\Mp3tag\data\sources\`.
 
-**Tray icon not visible** — click the `^` arrow on the taskbar near the clock.
+**Tray icon not visible**: click the `^` arrow on the taskbar near the clock.
 
 ---
 
@@ -113,7 +113,7 @@ Check that the script files are in `%APPDATA%\Mp3tag\data\sources\`.
 
 Some antivirus engines flag `mp3tag_proxy.exe` on generic ML heuristics (e.g.
 Microsoft Defender's `Wacatac.ml`), triggered by behavior the tool genuinely
-does — automating a local browser off-screen to pass Cloudflare, and killing
+does: automating a local browser off-screen to pass Cloudflare, and killing
 its process afterward. This is a known false-positive pattern on PyInstaller-built
 executables; we've verified the published binary's hash matches our build and
 that every bundled dependency is an unmodified copy from PyPI, and filed a false
@@ -126,7 +126,7 @@ dependency bundled into the executable, with versions.
 
 ## Contact
 
-Questions, issues, or requests — find me on the Mp3tag community forum as **The_Zhu**.
+Questions, issues, or requests: find me on the Mp3tag community forum as **The_Zhu**.
 
 ---
 
