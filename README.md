@@ -96,7 +96,7 @@ these yet.
 | Auto-exit when idle (30 min) | Toggle idle auto-exit on/off |
 | Check for updates | Toggle the startup version check |
 | Open log | Opens `proxy.log` in your text editor |
-| About | Shows version info |
+| About | Shows version info. Click anywhere on it, press Escape, or use the close mark to dismiss it |
 | Quit | Shuts down the proxy |
 
 > On startup the proxy checks GitHub for a newer release (version numbers only,
@@ -105,10 +105,15 @@ these yet.
 > **Check for updates** toggle.
 
 > The proxy also checks stevehero's Beatport scripts (if installed) on
-> startup. If they need an edit, the splash notes it and the tray gets a
-> **Fix Beatport scripts…** item; clicking either one runs
-> `beatport_scripts_patcher.exe` for you (if it's in the same folder as the
-> proxy). Both stay hidden the rest of the time.
+> startup. If they need an edit, a red line appears on the splash and the tray
+> gets a **Fix Beatport scripts…** item. Clicking that line, or that item, runs
+> `beatport_scripts_patcher.exe` for you if it sits in the same folder as the
+> proxy. Clicking anywhere else on the splash only closes it.
+>
+> If the patcher next to the proxy is older than the proxy itself, the line and
+> the menu item say so and take you to the download instead of running it, since
+> an out-of-date patcher may not be able to apply the fix at all. All of this
+> stays hidden when there is nothing to do, including when you have no patcher.
 
 ---
 
@@ -118,7 +123,8 @@ these yet.
 Also check that no VPN is blocking `127.0.0.1`.
 
 **Beatport is slow on the first request**: that's expected. The proxy is using
-Edge in the background to clear Cloudflare's challenge (~5–10 s); it's cached
+Edge, Chrome or Brave in the background to clear Cloudflare's challenge
+(~5–10 s, longer on a slow connection or an older machine); it's cached
 afterwards, so following requests are fast.
 
 **Connection error / no tray icon**: proxy failed to start. Check `proxy.log`
