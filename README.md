@@ -94,6 +94,7 @@ these yet.
 | Item | Action |
 |---|---|
 | Auto-exit when idle (30 min) | Toggle idle auto-exit on/off |
+| Faster Beatport tagging | Hand Mp3tag a much smaller Beatport track page. Off by default |
 | Check for updates | Toggle the startup version check |
 | Open log | Opens `proxy.log` in your text editor |
 | About | Shows version info. Click anywhere on it, press Escape, or use the close mark to dismiss it |
@@ -114,6 +115,18 @@ these yet.
 > the menu item say so and take you to the download instead of running it, since
 > an out-of-date patcher may not be able to apply the fix at all. All of this
 > stays hidden when there is nothing to do, including when you have no patcher.
+
+> **Faster Beatport tagging** is worth turning on if selecting a track feels
+> slow. Beatport sends about 630 KB for a single track, of which the track
+> itself is under 2 KB; the rest is the charts and recommendations sections
+> that no tag script reads. With this on, the proxy cuts the page down before
+> Mp3tag ever sees it, which saves Mp3tag more than a dozen search and replace
+> passes over half a megabyte. The difference is largest on older machines and
+> does not change a single field you get.
+>
+> It only ever touches Beatport track pages. Release pages, searches, artwork
+> and Traxsource go through untouched. If you have a custom script that reads
+> something outside the track's own data, turn it off.
 
 ---
 
