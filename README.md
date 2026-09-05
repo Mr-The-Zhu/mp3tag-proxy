@@ -33,11 +33,19 @@ Details, or run `beatport_scripts_patcher.exe --version`.
 
 ### 2. Install your tag-source scripts
 
-**Beatport**: stevehero's Beatport v6 scripts:  
+**Beatport**: stevehero's Beatport v6 scripts, from his own thread:  
 [community.mp3tag.de › WS Beatport by stevehero](https://community.mp3tag.de/t/ws-beatport-com-by-stevehero-release-single-track-artwork-tagging/12568)
 
-Beatport · **Traxsource** · SoundCloud: Updated & Fixed Scripts 2026 (by Jordi & Claude):  
+`beatport_scripts_patcher.exe` is written against **v6.007**, the current
+release in that thread. It is the only set of Beatport scripts needed here.
+
+**Traxsource**: Jordi & Claude's scripts:  
 [community.mp3tag.de › WS Beatport · Traxsource · SoundCloud](https://community.mp3tag.de/t/ws-beatport-traxsource-soundcloud-updated-fixed-scripts-2026-by-jordi-claude/71123)
+
+That thread is titled Beatport · Traxsource · SoundCloud, but only its
+Traxsource scripts are used here. Nothing in this project needs a Beatport
+script from it, so if the Beatport files in that thread are unavailable, it
+does not affect the proxy or the patcher: use stevehero's above.
 
 Place all script files into Mp3tag's sources folder:
 ```
