@@ -159,7 +159,11 @@ Search.inc`: release pages (`beatport.com/release/...`) were not changed.
 
 What moved, for reference: `name`→`track_name`; `id`→`track_id`; `length`
 (an `"m:ss"` string)→`track_length_ms` (milliseconds); `new_release_date`
-(track-level)→`release.release_date`; `catalog_number` (track-level)→
+(track-level)→`release.release_date`, **and it is now a full timestamp**
+(`"2019-02-15T00:00:00"`) where the old field was a plain date, so it has to
+be trimmed before any date formatting, exactly as the search-results parser
+in `Track Search.inc` already does with
+`RegexpReplace "T\d+:\d+:\d+" ""`; `catalog_number` (track-level)→
 `release.catalog_number`; `release.image.uri`/`.dynamic_uri`→a single
 `release.image_url` (still a `{w}x{h}` template); `release.label`→`label`
 (now a sibling of `release`, not nested under it); `key` (an object with
@@ -239,6 +243,7 @@ OutputTo "DATE"
 IfVar "SettingDateFormat" "MMDD"
 json_select_object "release"
 json_select "release_date" # was top-level "new_release_date", moved under release
+RegexpReplace "T\d+:\d+:\d+" ""  # release_date is a full timestamp now, same trim the search parser uses
 RegexpReplace "\d\d\d\d-(\d\d)-(\d\d)" "$1$2"     # DATE in MMDD format
 SayRest
 json_unselect_object
@@ -246,6 +251,7 @@ Endif
 IfVar "SettingDateFormat" "DDMM"
 json_select_object "release"
 json_select "release_date"
+RegexpReplace "T\d+:\d+:\d+" ""  # release_date is a full timestamp now, same trim the search parser uses
 RegexpReplace "\d\d\d\d-(\d\d)-(\d\d)" "$2$1"     # DATE in DDMM format
 SayRest
 json_unselect_object
@@ -253,6 +259,7 @@ Endif
 IfVar "SettingDateFormat" "YYYY-MM-DD"
 json_select_object "release"
 json_select "release_date"
+RegexpReplace "T\d+:\d+:\d+" ""  # release_date is a full timestamp now, same trim the search parser uses
 SayRest
 json_unselect_object
 Endif
@@ -374,6 +381,7 @@ OutputTo "YEAR"
 IfVar "SettingYearFormat" "DD-MM-YYYY"
 json_select_object "release"
 json_select "release_date" # was top-level "new_release_date"
+RegexpReplace "T\d+:\d+:\d+" ""  # release_date is a full timestamp now, same trim the search parser uses
 RegexpReplace "(\d\d\d\d)-(\d\d)-(\d\d)" "$3-$2-$1"   # YEAR in DD-MM-YYYY format
 SayRest
 json_unselect_object
@@ -381,6 +389,7 @@ Endif
 IfVar "SettingYearFormat" "YYYY"
 json_select_object "release"
 json_select "release_date"
+RegexpReplace "T\d+:\d+:\d+" ""  # release_date is a full timestamp now, same trim the search parser uses
 RegexpReplace "(\d\d\d\d)-\d\d-\d\d" "$1"             # YEAR in YYYY format
 SayRest
 json_unselect_object
@@ -388,6 +397,7 @@ Endif
 IfVar "SettingYearFormat" "YYYY-MM-DD"
 json_select_object "release"
 json_select "release_date"
+RegexpReplace "T\d+:\d+:\d+" ""  # release_date is a full timestamp now, same trim the search parser uses
 SayRest
 json_unselect_object
 Endif
