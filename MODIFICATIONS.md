@@ -123,9 +123,16 @@ AFTER:   ...||http://127.0.0.1:8787/track/tracks/%s
 Beatport's own JSON sometimes gives a small (e.g. 500×500) `image.uri`, even
 though a much larger version exists. There's a second field, `image.dynamic_uri`,
 with a `{w}x{h}` size template you can fill in yourself to always get the full
-1400×1400 version. This affects the `COVERURL` block in **all 5** `.inc` files
-(`Track Direct`, `Track Search`, `Release Direct`, `Release Search`,
-`Artwork Search`). In each, find:
+1400×1400 version. This affects the `COVERURL` block in three `.inc` files:
+`Release Direct`, `Release Search` and `Artwork Search`.
+
+`Track Direct` and `Track Search` are **not** in that list any more. Beatport's
+track page no longer has an `image` object at all, so their cover art is handled
+by the 2026-09 schema fix below, which reads `release.image_url` instead. Do not
+apply this edit to those two files: it would change the block that the schema fix
+expects to find, and that fix would then be reported as not applying.
+
+In each of the three, find:
 
 ```
 json_select "uri"
@@ -177,8 +184,9 @@ top-level field into `genre.sub_genre` and is now always present (with a
 `desc` (the track description) are gone from this endpoint entirely.
 
 **Fix:** in both `Track Direct.inc` and `Track Search.inc`, replace the
-entire block starting at the comment `# Fix the artist URL from the API one
-to the normal beatport URL` and ending at the last `Endif` of the `YEAR`
+entire block starting on the line *after* the comment `# Fix the artist URL
+from the API one to the normal beatport URL` (keep that comment itself, which
+is what the patcher does) and ending at the last `Endif` of the `YEAR`
 section (i.e. everything from just after the "USER OPTIONS" block down to
 the "TAG CUSTOMIZATION" divider) with:
 
