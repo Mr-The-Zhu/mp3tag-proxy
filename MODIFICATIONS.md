@@ -352,12 +352,12 @@ Say ")"
 Endif
 
 OutputTo "UNSYNCEDLYRICS"
-Say "Release type:\u0009\u0009"
+Say "Release type:\\u0009\\u0009"
 Say "Beatport Single Track"
-Say "\u000d\u000a----------------------------------------------\u000d\u000a"
+Say "\\u000d\\u000a----------------------------------------------\\u000d\\u000a"
 # "exclusive" and "desc" (the track description) are gone from this page's data entirely. Beatport
 # removed both from this endpoint, so those two lines are dropped rather than guessed at.
-Say "Tagged by:\u0009\u0009Mp3Tag w/ beatport.com scripts [v6.007 by stevehero™] (◣_◢) (http://bit.ly/2EmyidV)"
+Say "Tagged by:\\u0009\\u0009Mp3Tag w/ beatport.com scripts [v6.007 by stevehero™] (◣_◢) (http://bit.ly/2EmyidV)"
 
 OutputTo "WWW"
 Say "https://www.beatport.com/release/"
