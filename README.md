@@ -26,6 +26,11 @@ Get `mp3tag_proxy.exe` from the [Releases](../../releases/latest) page.
 If you use Beatport, also grab `beatport_scripts_patcher.exe` from the same page.
 Place them in any folder (e.g. `C:\Tools\mp3tag_proxy\`).
 
+The two ship as one release, so update them together. If you keep them side
+by side, the proxy checks this for you and says so when the patcher is
+behind. To see the version yourself: right click either file, Properties,
+Details, or run `beatport_scripts_patcher.exe --version`.
+
 ### 2. Install your tag-source scripts
 
 **Beatport**: stevehero's Beatport v6 scripts:  
