@@ -94,7 +94,7 @@ these yet.
 | Item | Action |
 |---|---|
 | Auto-exit when idle (30 min) | Toggle idle auto-exit on/off |
-| Faster Beatport tagging | Hand Mp3tag a much smaller Beatport track page. Off by default |
+| Faster Beatport tagging | Send Mp3tag less data from Beatport, in two places. Off by default |
 | Check for updates | Toggle the startup version check |
 | Open log | Opens `proxy.log` in your text editor |
 | About | Shows version info. Click anywhere on it, press Escape, or use the close mark to dismiss it |
@@ -116,17 +116,29 @@ these yet.
 > an out-of-date patcher may not be able to apply the fix at all. All of this
 > stays hidden when there is nothing to do, including when you have no patcher.
 
-> **Faster Beatport tagging** is worth turning on if selecting a track feels
-> slow. Beatport sends about 630 KB for a single track, of which the track
-> itself is under 2 KB; the rest is the charts and recommendations sections
-> that no tag script reads. With this on, the proxy cuts the page down before
-> Mp3tag ever sees it, which saves Mp3tag more than a dozen search and replace
-> passes over half a megabyte. The difference is largest on older machines and
-> does not change a single field you get.
+> **Faster Beatport tagging** is worth turning on if Beatport tagging feels
+> slow. It cuts down what Mp3tag has to work through, in the two places where
+> Beatport sends far more than any tag script uses. It changes no field you get,
+> and the difference is largest on older machines.
 >
-> It only ever touches Beatport track pages. Release pages, searches, artwork
-> and Traxsource go through untouched. If you have a custom script that reads
-> something outside the track's own data, turn it off.
+> *The track page.* Beatport sends about 630 KB for a single track, of which the
+> track itself is under 2 KB; the rest is the charts and recommendations
+> sections that no tag script reads. The proxy cuts the page down before Mp3tag
+> ever sees it, saving Mp3tag more than a dozen search and replace passes over
+> half a megabyte.
+>
+> *The search results list.* A Beatport search returns around 150 results, and
+> Beatport now points every one of them at a full 1400x1400 cover, roughly
+> 169 KB each. Mp3tag downloads and decodes all of them just to draw the small
+> thumbnails in the chooser: about 25 MB of images for a single search, and
+> enough work to make an older machine struggle. The proxy asks Beatport's own
+> resizer for list-sized covers instead, around 65 times smaller. **The artwork
+> written to your files is not affected**, because that comes from the release
+> or track page, which this never touches.
+>
+> Release pages, artwork lookups and everything on Traxsource pass through
+> untouched either way. If you have a custom script that reads something outside
+> the track's own data, turn it off.
 
 ---
 
