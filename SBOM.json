@@ -3,11 +3,11 @@
   "specVersion": "1.5",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-07T09:30:00Z",
+    "timestamp": "2026-09-10T10:00:00Z",
     "component": {
       "type": "application",
       "name": "mp3tag_proxy.exe",
-      "version": "2.5.1"
+      "version": "2.6.0"
     },
     "properties": [
       {
@@ -24,8 +24,8 @@
     {
       "type": "library",
       "name": "curl_cffi",
-      "version": "0.15.0",
-      "purl": "pkg:pypi/curl-cffi@0.15.0",
+      "version": "0.16.3",
+      "purl": "pkg:pypi/curl-cffi@0.16.3",
       "scope": "required"
     },
     {

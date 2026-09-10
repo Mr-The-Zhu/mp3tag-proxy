@@ -180,8 +180,10 @@ plus a new ready-made `key_camelot` string (e.g. `"4A"`); the separate
 `"type":"Remixer"` (main artists have `"type":"Artist"`); each artist's
 `url` field is gone, replaced with `slug`; `sub_genre` moved from a
 top-level field into `genre.sub_genre` and is now always present (with a
-`null` name) instead of sometimes being absent entirely; `exclusive` and
-`desc` (the track description) are gone from this endpoint entirely.
+`null` name) instead of sometimes being absent entirely; `exclusive` moved
+into `price.category`, an array of plain strings that contains `"exclusive"`
+when the track is one; and `desc` (the track description) is gone from this
+endpoint entirely, though it is still on the release page.
 
 **Fix:** in both `Track Direct.inc` and `Track Search.inc`, replace the
 entire block starting on the line *after* the comment `# Fix the artist URL
@@ -203,6 +205,16 @@ the "TAG CUSTOMIZATION" divider) with:
 RegexpReplace "(\"id\":\s*)(\d+)(\s*,\s*\"name\"\s*:\s*\"[^\"]*\"\s*,\s*\"type\"\s*:\s*\"(?:Artist|Remixer)\"\s*,\s*\"slug\"\s*:\s*\")([^\"]+)(\")" "$1$2$3$4$5,\"artist_url\":\"https://www.beatport.com/artist/$4/$2\""
 RegexpReplace "(\"id\":\s*\d+\s*,\s*\")name(\"\s*:\s*\"[^\"]*\"\s*,\s*\"type\"\s*:\s*\"Artist\")" "$1actual_artist_name$2"
 RegexpReplace "(\"id\":\s*\d+\s*,\s*\")name(\"\s*:\s*\"[^\"]*\"\s*,\s*\"type\"\s*:\s*\"Remixer\")" "$1remixer_artist_name$2"
+
+# "exclusive" is not gone, it moved: a track is exclusive when the string
+# "exclusive" appears in "price"."category", which is an array of plain
+# strings. There is no way to test array membership in the JSON engine, so
+# these two build an "is_exclusive" flag next to it in the same 1/0 shape
+# the old field had. The first marks the ones that are exclusive; the
+# second then marks everything still unmarked, which is why the order of
+# these two lines matters. Thanks to stevehero for pointing this out.
+RegexpReplace "(\"price\":\{\"category\":\[[^\]]*\"exclusive\"[^\]]*\])" "$1,\"is_exclusive\":\"1\""
+RegexpReplace "(\"price\":\{\"category\":\[[^\]]*\]),\"currency\"" "$1,\"is_exclusive\":\"0\",\"currency\""
 
 RegexpReplace "(?i)\bep\b" "EP"                               # Fix Ep to EP
 RegexpReplace "\s+Remix\)\s+\(Original\s+Mix\)" " Remix)"     # Fix ' Remix (Original Mix)'
@@ -370,8 +382,19 @@ OutputTo "UNSYNCEDLYRICS"
 Say "Release type:\\u0009\\u0009"
 Say "Beatport Single Track"
 Say "\\u000d\\u000a----------------------------------------------\\u000d\\u000a"
-# "exclusive" and "desc" (the track description) are gone from this page's data entirely. Beatport
-# removed both from this endpoint, so those two lines are dropped rather than guessed at.
+Say "Exclusive to beatport:\\u0009"
+# was a plain "exclusive" 0/1 field; it now lives as a string inside
+# "price"."category", and the regexes at the top turn that back into 1/0.
+json_select_object "price"
+json_select "is_exclusive"
+Replace "0" "❎"
+Replace "1" "✅"
+SayRest
+json_unselect_object
+Say "\\u000d\\u000a----------------------------------------------\\u000d\\u000a"
+# "desc" (the track description) really is gone from this endpoint. It is still on the
+# release page, but a track script never fetches one, so that line is dropped rather
+# than guessed at.
 Say "Tagged by:\\u0009\\u0009Mp3Tag w/ beatport.com scripts [v6.007 by stevehero™] (◣_◢) (http://bit.ly/2EmyidV)"
 
 OutputTo "WWW"

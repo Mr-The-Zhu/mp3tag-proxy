@@ -22,22 +22,26 @@ platforms. It appears as a small icon in the system tray.
 
 ### 1. Download
 
-Get `mp3tag_proxy.exe` from the [Releases](../../releases/latest) page.
-If you use Beatport, also grab `beatport_scripts_patcher.exe` from the same page.
-Place them in any folder (e.g. `C:\Tools\mp3tag_proxy\`).
+Get `mp3tag_proxy.exe` from the [Releases](../../releases/latest) page and put
+it in any folder (e.g. `C:\Tools\mp3tag_proxy\`). That one file is all you need.
 
-The two ship as one release, so update them together. If you keep them side
-by side, the proxy checks this for you and says so when the patcher is
-behind. To see the version yourself: right click either file, Properties,
-Details, or run `beatport_scripts_patcher.exe --version`.
+`beatport_scripts_patcher.exe` is on the same page and is **optional**. The
+proxy carries the same fixes inside itself and applies them from its own tray
+menu, so most people never need it. Download it if you want a per-file report
+in a console, or if your scripts are **not** in the usual
+`%APPDATA%\Mp3tag\data\sources` (a portable Mp3tag, for instance): it can work
+on any folder, either passed on the command line or typed in when it asks.
+
+If you have one from an earlier version sitting next to the proxy, delete it or
+leave it as you prefer, the proxy ignores it either way.
 
 ### 2. Install your tag-source scripts
 
 **Beatport**: stevehero's Beatport v6 scripts, from his own thread:  
 [community.mp3tag.de › WS Beatport by stevehero](https://community.mp3tag.de/t/ws-beatport-com-by-stevehero-release-single-track-artwork-tagging/12568)
 
-`beatport_scripts_patcher.exe` is written against **v6.007**, the current
-release in that thread. It is the only set of Beatport scripts needed here.
+The fixes are written against **v6.007**, the current release in that thread.
+It is the only set of Beatport scripts needed here.
 
 **Traxsource**: Jordi & Claude's scripts:  
 [community.mp3tag.de › WS Beatport · Traxsource · SoundCloud](https://community.mp3tag.de/t/ws-beatport-traxsource-soundcloud-updated-fixed-scripts-2026-by-jordi-claude/71123)
@@ -54,12 +58,15 @@ Place all script files into Mp3tag's sources folder:
 
 ### 3. Edit the script files
 
-**Beatport (stevehero's scripts):** run `beatport_scripts_patcher.exe` once.
-It applies every edit those scripts need (proxy routing, full-resolution
-cover art, and the current Beatport JSON fix) automatically, with a backup
-of each file first. The proxy itself will also tell you, on the splash
-screen and in its tray menu, if it later detects these scripts need it
-again.
+**Beatport (stevehero's scripts):** start `mp3tag_proxy.exe`. It checks these
+scripts on startup, and if they need anything it shows a line on the splash and
+a **Fix Beatport scripts…** item in the tray menu. Click either one and it
+applies every edit they need (proxy routing, full-resolution cover art, and the
+current Beatport JSON fix), keeping a `.bak` of each original first. It tells
+you what it changed and puts the full report in the log.
+
+The same check runs at every startup, so if Beatport changes something later
+and an update brings a new fix, the proxy tells you then too.
 
 **Traxsource (Jordi & Claude's scripts):** apply the edits described in
 [MODIFICATIONS.md](MODIFICATIONS.md) by hand, there's no automated tool for
@@ -105,16 +112,15 @@ these yet.
 > tray gets an **Update available** item. Turn the check off with the
 > **Check for updates** toggle.
 
-> The proxy also checks stevehero's Beatport scripts (if installed) on
-> startup. If they need an edit, a red line appears on the splash and the tray
-> gets a **Fix Beatport scripts…** item. Clicking that line, or that item, runs
-> `beatport_scripts_patcher.exe` for you if it sits in the same folder as the
-> proxy. Clicking anywhere else on the splash only closes it.
+> The proxy also checks stevehero's Beatport scripts (if installed) on startup.
+> If they need an edit, a red line appears on the splash and the tray gets a
+> **Fix Beatport scripts…** item. Clicking that line, or that item, applies the
+> fixes there and then, keeping a `.bak` of each original, and shows what it
+> changed. The full per-file report goes to the log. Clicking anywhere else on
+> the splash only closes it.
 >
-> If the patcher next to the proxy is older than the proxy itself, the line and
-> the menu item say so and take you to the download instead of running it, since
-> an out-of-date patcher may not be able to apply the fix at all. All of this
-> stays hidden when there is nothing to do, including when you have no patcher.
+> All of this stays hidden when there is nothing to do, and never appears at all
+> if you do not have stevehero's scripts.
 
 > **Faster Beatport tagging** is worth turning on if Beatport tagging feels
 > slow. It cuts down what Mp3tag has to work through, in the two places where
