@@ -22,11 +22,13 @@ with `http://127.0.0.1:8787` in specific lines of the script files.
 
 ## Beatport: stevehero's v6 scripts
 
-> **Recommended: run `beatport_scripts_patcher.exe`** (bundled with the proxy
-> download) instead of doing the edits below by hand. It applies every fix in
-> this section automatically, backs up each file before touching it, is safe
-> to run more than once, and the proxy itself will tell you (on the splash
-> screen and in the tray menu) if it detects your scripts still need it.
+> **Recommended: let the proxy do it.** Since v2.6.0 Mp3tag Proxy applies every
+> fix in this file itself: it tells you on the splash screen and in the tray
+> menu when it finds scripts that need it, and "Fix tagging scripts…" in the
+> tray menu does the work. `mp3tag_scripts_patcher.exe` (on the same download
+> page) is the same thing as a console tool, for anyone whose scripts live
+> outside the default folder. Either way each file is backed up before it is
+> touched, and running it again is safe.
 >
 > The manual steps below are kept for people who can't or don't want to run
 > an `.exe` (the patcher is Windows-only; if you're on Mac, or you'd rather
@@ -444,6 +446,20 @@ fields all came back correct in every case.
 
 ## Traxsource: Beatport · **Traxsource** · SoundCloud scripts (by Jordi & Claude)
 
+> **Recommended: let the proxy do it**, exactly as for the Beatport scripts
+> above. Since v2.7.0 it patches Jordi's Traxsource v3.0 scripts too, and the
+> tray notice names whichever pack needs it. The steps below are the same
+> edits, for anyone who would rather apply them by hand.
+
+The four files these edits apply to are:
+
+```
+Traxsource by Jordi & Claude#TRACK Search.inc
+Traxsource by Jordi & Claude#TRACK Direct by ID.inc
+Traxsource by Jordi & Claude#RELEASE Search.inc
+Traxsource by Jordi & Claude#RELEASE Direct by ID.inc
+```
+
 Traxsource needs a different URL form than Beatport. Beatport is the proxy's
 default target, so a bare `http://127.0.0.1:8787/...` is forwarded straight to
 Beatport. Traxsource is **not** the default, so its request URLs must embed the
@@ -455,6 +471,8 @@ http://127.0.0.1:8787/https://www.traxsource.com/...
 
 ### 1. `[BasedOn]`: bare proxy
 
+In all four files:
+
 ```
 BEFORE:  [BasedOn]=https://www.traxsource.com
 AFTER:   [BasedOn]=http://127.0.0.1:8787
@@ -463,6 +481,7 @@ AFTER:   [BasedOn]=http://127.0.0.1:8787
 ### 2. `[IndexUrl]` and `[AlbumUrl]`: embedded form
 
 Keep the rest of the path; just insert the proxy in front of the original URL.
+One line per file, in the order the files are listed above:
 
 ```
 BEFORE:  [IndexUrl]=https://www.traxsource.com/search/tracks?term=%s
@@ -470,6 +489,12 @@ AFTER:   [IndexUrl]=http://127.0.0.1:8787/https://www.traxsource.com/search/trac
 
 BEFORE:  [AlbumUrl]=https://www.traxsource.com/track/%s
 AFTER:   [AlbumUrl]=http://127.0.0.1:8787/https://www.traxsource.com/track/%s
+
+BEFORE:  [IndexUrl]=https://www.traxsource.com/search/titles?term=%s
+AFTER:   [IndexUrl]=http://127.0.0.1:8787/https://www.traxsource.com/search/titles?term=%s
+
+BEFORE:  [AlbumUrl]=https://www.traxsource.com/title/%s
+AFTER:   [AlbumUrl]=http://127.0.0.1:8787/https://www.traxsource.com/title/%s
 ```
 
 ### 3. Search result `_URL`: embedded form
@@ -512,6 +537,61 @@ In `TRACK Search.inc`, find:
 BEFORE:  regexpreplace "<!--DIV title--><a href=\"([^\"]+)\">([^<]+)</a>" "<TrackURL=$1><TrackName=$2>"
 AFTER:   regexpreplace "<!--DIV title--><a href=\"([^\"]+)\">(?:<img[^>]*>)?([^<]+)</a>" "<TrackURL=$1><TrackName=$2>"
 ```
+
+> **Superseded by #6.** That line stopped matching altogether in September 2026.
+> The replacement below covers the icon too, so apply #6 and skip this one.
+
+### 6. 2026-09: Traxsource minified its HTML
+
+Around the middle of September 2026 Traxsource started serving minified pages.
+Two things the scripts were anchored on disappeared site-wide:
+
+- **Every HTML comment is gone**, including the `<!--DIV title-->`,
+  `<!--DIV label-->` and `<!--DIV genre-->` markers the TRACK Search index
+  parser matched on. Symptom: search results come back with an empty `_URL`,
+  so Mp3tag fetches the bare Traxsource homepage instead of the track page
+  (the same visible failure as #5), and Label and Genre stay empty.
+- **Attribute quotes are normalised to double quotes.** `<span class='pre-ord-txt'>`
+  is now `<span class="pre-ord-txt">`. Symptom: a pre-order release gets no
+  release date.
+
+The replacements below anchor on each cell's own class instead of the comment,
+and accept either quote style, so they keep working if Traxsource changes its
+mind.
+
+In the `[ParserScriptIndex]` section of `TRACK Search.inc`, three lines:
+
+```
+BEFORE:  regexpreplace "<!--DIV title--><a href=\"([^\"]+)\">(?:<img[^>]*>)?([^<]+)</a>" "<TrackURL=$1><TrackName=$2>"
+AFTER:   regexpreplace "<div class=\"trk-cell title[^\"]*\">(?:<!--DIV title-->)?<a href=\"([^\"]+)\">(?:<img[^>]*>)?([^<]+)</a>" "<TrackURL=$1><TrackName=$2>"
+
+BEFORE:  regexpreplace "<!--DIV label--><a href=\"[^\"]+\">([^<]+)</a>" "<TrackLabel=$1>"
+AFTER:   regexpreplace "<div class=\"trk-cell label[^\"]*\">(?:<!--DIV label-->)?<a href=\"[^\"]+\">([^<]+)</a>" "<TrackLabel=$1>"
+
+BEFORE:  regexpreplace "<!--DIV genre--><a href=\"[^\"]+\">([^<]+)</a>" "<TrackGenre=$1>"
+AFTER:   regexpreplace "<div class=\"trk-cell genre[^\"]*\">(?:<!--DIV genre-->)?<a href=\"[^\"]+\">([^<]+)</a>" "<TrackGenre=$1>"
+```
+
+Then the pre-order date, five lines across all four `.inc` files. The edit is
+the same everywhere: replace `class='pre-ord-txt'` with `class=['\"]pre-ord-txt['\"]`.
+
+```
+TRACK Search.inc  [ParserScriptIndex]
+BEFORE:  regexpreplace "<div class=\"trk-cell r-date\"><span class='pre-ord-txt'>Pre-order for\s+([^<]+)</span></div>" "<TrackDate=$1>"
+AFTER:   regexpreplace "<div class=\"trk-cell r-date\"><span class=['\"]pre-ord-txt['\"]>Pre-order for\s+([^<]+)</span></div>" "<TrackDate=$1>"
+
+TRACK Search.inc  [ParserScriptAlbum]   and   TRACK Direct by ID.inc
+BEFORE:  regexpreplace "<td>Released:</td><td class=\"det\"><span class='pre-ord-txt'>Pre-order for\s+([^<]+)</span></td>" "<TrackDate=$1>"
+AFTER:   regexpreplace "<td>Released:</td><td class=\"det\"><span class=['\"]pre-ord-txt['\"]>Pre-order for\s+([^<]+)</span></td>" "<TrackDate=$1>"
+
+RELEASE Search.inc   and   RELEASE Direct by ID.inc
+BEFORE:  regexpreplace "<div class=\"cat-rdate\">([^\s<]+)\s+\$verticalBar\(\)\s+<span class='pre-ord-txt'>Pre-order for\s+([^<]+)</span>" "<CatalogID=$1><ReleaseDate=$2>"
+AFTER:   regexpreplace "<div class=\"cat-rdate\">([^\s<]+)\s+\$verticalBar\(\)\s+<span class=['\"]pre-ord-txt['\"]>Pre-order for\s+([^<]+)</span>" "<CatalogID=$1><ReleaseDate=$2>"
+```
+
+> Nothing else broke. Everything the release scripts and both track-page
+> parsers read was already anchored on classes or on `<td>` labels, and those
+> were checked against live pages after the change.
 
 ---
 
