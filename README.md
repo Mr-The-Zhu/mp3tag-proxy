@@ -25,15 +25,17 @@ platforms. It appears as a small icon in the system tray.
 Get `mp3tag_proxy.exe` from the [Releases](../../releases/latest) page and put
 it in any folder (e.g. `C:\Tools\mp3tag_proxy\`). That one file is all you need.
 
-`beatport_scripts_patcher.exe` is on the same page and is **optional**. The
+`mp3tag_scripts_patcher.exe` is on the same page and is **optional**. The
 proxy carries the same fixes inside itself and applies them from its own tray
 menu, so most people never need it. Download it if you want a per-file report
 in a console, or if your scripts are **not** in the usual
 `%APPDATA%\Mp3tag\data\sources` (a portable Mp3tag, for instance): it can work
 on any folder, either passed on the command line or typed in when it asks.
 
-If you have one from an earlier version sitting next to the proxy, delete it or
-leave it as you prefer, the proxy ignores it either way.
+It was called `beatport_scripts_patcher.exe` up to v2.6.1, before it learned
+the Traxsource scripts as well. If you have that one, or any other older copy,
+sitting next to the proxy, delete it or leave it as you prefer: the proxy
+ignores it either way.
 
 ### 2. Install your tag-source scripts
 
@@ -58,19 +60,19 @@ Place all script files into Mp3tag's sources folder:
 
 ### 3. Edit the script files
 
-**Beatport (stevehero's scripts):** start `mp3tag_proxy.exe`. It checks these
-scripts on startup, and if they need anything it shows a line on the splash and
-a **Fix Beatport scripts…** item in the tray menu. Click either one and it
-applies every edit they need (proxy routing, full-resolution cover art, and the
-current Beatport JSON fix), keeping a `.bak` of each original first. It tells
-you what it changed and puts the full report in the log.
+Start `mp3tag_proxy.exe`. It checks both script packs on startup, and if either
+needs anything it shows a line on the splash and a **Fix tagging scripts…** item
+in the tray menu. Click either one and it applies every edit they need: proxy
+routing, full-resolution cover art, Beatport's current JSON fix and Traxsource's
+current HTML fix. It keeps a `.bak` of each original first, tells you what it
+changed, and puts the full report in the log.
 
-The same check runs at every startup, so if Beatport changes something later
+The same check runs at every startup, so if either site changes something later
 and an update brings a new fix, the proxy tells you then too.
 
-**Traxsource (Jordi & Claude's scripts):** apply the edits described in
-[MODIFICATIONS.md](MODIFICATIONS.md) by hand, there's no automated tool for
-these yet.
+Every edit it makes is also written out step by step in
+[MODIFICATIONS.md](MODIFICATIONS.md), for anyone who would rather apply them by
+hand or read exactly what changed before trusting it.
 
 > **Important:** do not edit `.settings` files.
 
@@ -112,15 +114,16 @@ these yet.
 > tray gets an **Update available** item. Turn the check off with the
 > **Check for updates** toggle.
 
-> The proxy also checks stevehero's Beatport scripts (if installed) on startup.
-> If they need an edit, a red line appears on the splash and the tray gets a
-> **Fix Beatport scripts…** item. Clicking that line, or that item, applies the
-> fixes there and then, keeping a `.bak` of each original, and shows what it
-> changed. The full per-file report goes to the log. Clicking anywhere else on
-> the splash only closes it.
+> The proxy also checks stevehero's Beatport scripts and Jordi's Traxsource
+> scripts (whichever you have) on startup. If they need an edit, a red line
+> appears on the splash naming the pack, and the tray gets a **Fix tagging
+> scripts…** item. Clicking that line, or that item, applies the fixes there and
+> then, keeping a `.bak` of each original, and shows what it changed. The full
+> per-file report goes to the log. Clicking anywhere else on the splash only
+> closes it.
 >
 > All of this stays hidden when there is nothing to do, and never appears at all
-> if you do not have stevehero's scripts.
+> if you have neither set of scripts.
 
 > **Faster Beatport tagging** is worth turning on if Beatport tagging feels
 > slow. It cuts down what Mp3tag has to work through, in the two places where
