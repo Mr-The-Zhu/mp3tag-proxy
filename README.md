@@ -165,6 +165,14 @@ afterwards, so following requests are fast.
 next to the `.exe`. Port 8787 may be in use by another application (see below to
 change it).
 
+**The proxy disappears while tagging** (Mp3tag shows error 12030): start it
+again and look at the top of the new session in `proxy.log`. If the proxy
+crashed, the stack trace from that crash is copied there. If it says the previous
+run "was most likely ended from outside", something else closed it, usually
+security software reacting to the hidden browser. The `[clearance]` lines just
+before show which step it was on. Please include that part of the log when you
+report it.
+
 **Changing the port**: if 8787 is blocked or taken, create/edit `proxy.cfg` next
 to the `.exe` and add a line like `port=9000`. You must also change the port in
 your **script URLs** (`http://127.0.0.1:9000/…`) to match. Restart the proxy and
