@@ -28,9 +28,9 @@ it in any folder (e.g. `C:\Tools\mp3tag_proxy\`). That one file is all you need.
 `mp3tag_scripts_patcher.exe` is on the same page and is **optional**. The
 proxy carries the same fixes inside itself and applies them from its own tray
 menu, so most people never need it. Download it if you want a per-file report
-in a console, or if your scripts are **not** in the usual
-`%APPDATA%\Mp3tag\data\sources` (a portable Mp3tag, for instance): it can work
-on any folder, either passed on the command line or typed in when it asks.
+in a console. It finds the scripts the same way the proxy does (see step 2),
+and it can also work on any folder passed on the command line or typed in
+when it asks.
 
 It was called `beatport_scripts_patcher.exe` up to v2.6.1, before it learned
 the Traxsource scripts as well. If you have that one, or any other older copy,
@@ -57,6 +57,24 @@ Place all script files into Mp3tag's sources folder:
 ```
 %APPDATA%\Mp3tag\data\sources\
 ```
+
+The proxy finds them there, and also in the two other places Mp3tag can keep
+them:
+
+- **Microsoft Store version**: on our test PC, which already had the regular
+  Mp3tag, it used the same folder as above. Mp3tag's own documentation gives
+  `%LOCALAPPDATA%\Packages\35795FlorianHeidenreich.Mp3tag_rf0p6xgxmspcc\LocalCache\Roaming\Mp3tag\data\sources\`
+  instead, so the proxy looks there too. Its **File → Open configuration
+  folder** did nothing in that test, so if you need the folder, check both.
+- **Portable Mp3tag**: `data\sources` inside its own folder. The proxy finds
+  this one when `mp3tag_proxy.exe` is somewhere inside that folder, for
+  example in a `data\tools` folder of its own.
+
+If yours are anywhere else, the splash says so in grey when the proxy starts:
+**Tagging scripts not found**. Click that line, or use the tray menu,
+**Scripts folder**, **Choose a folder…**, and tell the proxy once where they
+are. It is saved in `proxy.cfg` as a line like
+`sources=D:\Mp3tag\data\sources`, which you can also add by hand.
 
 ### 3. Edit the script files
 
@@ -105,6 +123,7 @@ hand or read exactly what changed before trusting it.
 | Auto-exit when idle (30 min) | Toggle idle auto-exit on/off |
 | Faster Beatport tagging | Send Mp3tag less data from Beatport, in two places. Off by default |
 | Check for updates | Toggle the startup version check |
+| Scripts folder | **Find automatically** (the default), or **Choose a folder…** if your scripts are somewhere the proxy cannot guess |
 | Open log | Opens `proxy.log` in your text editor |
 | About | Shows version info. Click anywhere on it, press Escape, or use the close mark to dismiss it |
 | Quit | Shuts down the proxy |
@@ -122,8 +141,10 @@ hand or read exactly what changed before trusting it.
 > per-file report goes to the log. Clicking anywhere else on the splash only
 > closes it.
 >
-> All of this stays hidden when there is nothing to do, and never appears at all
-> if you have neither set of scripts.
+> All of this stays hidden when there is nothing to do. If the proxy finds
+> neither set of scripts anywhere, the splash shows a grey **Tagging scripts not
+> found** line instead: click it to choose their folder, or ignore it if you
+> use scripts of your own.
 
 > **Faster Beatport tagging** is worth turning on if Beatport tagging feels
 > slow. It cuts down what Mp3tag has to work through, in the two places where
@@ -180,6 +201,13 @@ Mp3tag afterwards.
 
 **No results in Mp3tag**: fully exit Mp3tag (File → Exit) and reopen.
 Check that the script files are in `%APPDATA%\Mp3tag\data\sources\`.
+
+**Still 403 although the proxy is running**: Mp3tag is going to the site
+directly, so the scripts were never pointed at the proxy. Usually that means
+the proxy did not find them. The splash then shows a grey **Tagging scripts
+not found** line, and `proxy.log` lists every folder it looked in. Click that
+line, or use the tray menu, **Scripts folder**, to choose yours, then click
+**Fix tagging scripts…**.
 
 **Tray icon not visible**: click the `^` arrow on the taskbar near the clock.
 
