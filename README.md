@@ -112,7 +112,15 @@ hand or read exactly what changed before trusting it.
 > clearance expires) takes ~5–10 seconds while the proxy quietly uses a Chromium
 > browser (Edge, Chrome, or Brave) in the background to clear it. The tray tooltip
 > shows *"solving challenge…"* meanwhile. Everything after that is instant, and the
-> brief browser process closes itself. **Traxsource is unaffected.**
+> brief browser process closes itself. Traxsource can ask for the same check now
+> and then, and the proxy handles it the same way.
+
+> **Other sites:** the proxy is made for the Beatport and Traxsource scripts, but
+> it can fetch other sites too, for instance while you test a tag source of your
+> own: `http://127.0.0.1:8787/https://www.example.com/...`. To look at a site in a
+> browser, open it as `http://www.example.com.localhost:8787/` instead, which also
+> suits sites built as web apps. Nothing beyond Beatport and Traxsource is tested
+> or supported.
 
 ---
 
