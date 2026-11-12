@@ -1,7 +1,9 @@
 # Mp3tag Proxy
 
 Fixes **403 Forbidden** errors when using Mp3tag tag-source scripts with
-Beatport and Traxsource, caused by Cloudflare bot protection.
+Beatport and Traxsource, caused by Cloudflare bot protection, and keeps those
+scripts working when the sites change their pages. It also brings back
+Bandcamp search by artist and album name, with release dates.
 
 The proxy runs locally on your machine and sits between Mp3tag and the music
 platforms. It appears as a small icon in the system tray.
@@ -13,8 +15,8 @@ platforms. It appears as a small icon in the system tray.
 - Windows 10 / 11 with a Chromium browser: Microsoft Edge (preinstalled),
   Google Chrome, or Brave, used to clear Beatport's Cloudflare challenge
 - [Mp3tag](https://www.mp3tag.de/), the version your scripts require
-  (stevehero's Beatport v6: **v3.22+**, Traxsource: **v3.26+**)
-- Tag-source scripts for Beatport or Traxsource (see below)
+  (stevehero's Beatport v6: **v3.22+**, Traxsource: **v3.26+**, Bandcamp: **v3.22+**)
+- Tag-source scripts for Beatport, Traxsource or Bandcamp (see below)
 
 ---
 
@@ -53,6 +55,14 @@ Traxsource scripts are used here. Nothing in this project needs a Beatport
 script from it, so if the Beatport files in that thread are unavailable, it
 does not affect the proxy or the patcher: use stevehero's above.
 
+**Bandcamp**: the Bandcamp source, **0.5.0** or later, from its thread:  
+[community.mp3tag.de › WS Bandcamp](https://community.mp3tag.de/t/17838)
+
+Its **Bandcamp Search** finds albums and tracks by name and shows their
+release dates. Bandcamp's own search page needs JavaScript, which Mp3tag cannot
+run, so this one works only while the proxy is running. Without the proxy,
+0.5.0 works just like 0.4.9, minus Bandcamp Search.
+
 Place all script files into Mp3tag's sources folder:
 ```
 %APPDATA%\Mp3tag\data\sources\
@@ -88,6 +98,8 @@ changed, and puts the full report in the log.
 The same check runs at every startup, so if either site changes something later
 and an update brings a new fix, the proxy tells you then too.
 
+The Bandcamp scripts need no edits: their search already goes through the proxy.
+
 Every edit it makes is also written out step by step in
 [MODIFICATIONS.md](MODIFICATIONS.md), for anyone who would rather apply them by
 hand or read exactly what changed before trusting it.
@@ -115,24 +127,41 @@ hand or read exactly what changed before trusting it.
 > brief browser process closes itself. Traxsource can ask for the same check now
 > and then, and the proxy handles it the same way.
 
-> **Other sites:** the proxy is made for the Beatport and Traxsource scripts, but
-> it can fetch other sites too, for instance while you test a tag source of your
-> own: `http://127.0.0.1:8787/https://www.example.com/...`. To look at a site in a
-> browser, open it as `http://www.example.com.localhost:8787/` instead, which also
-> suits sites built as web apps. Nothing beyond Beatport and Traxsource is tested
-> or supported.
+> **Beatport releases:** Beatport no longer puts the track list on its release
+> pages. The proxy loads each track's own page and puts the list back, so the
+> Release scripts work as before, but a release takes a few seconds longer to
+> load than a single track.
+
+> **Other sites:** the proxy is made for the Beatport, Traxsource and Bandcamp
+> scripts, but it can fetch other sites too, for instance while you test a tag
+> source of your own: `http://127.0.0.1:8787/https://www.example.com/...`. To
+> look at a site in a browser, open it as `http://www.example.com.localhost:8787/`
+> instead, which also suits sites built as web apps. Nothing beyond Beatport,
+> Traxsource and Bandcamp is tested or supported.
 
 ---
 
 ## Tray menu
 
+At the top, four grey lines show how things stand:
+
+- the version and the address the proxy runs on, or **Solving the Cloudflare
+  check…** while one runs;
+- when the last request came in. If this still says **No requests yet** while
+  you tag, Mp3tag is not going through the proxy, which usually means the
+  scripts were never pointed at it (see Troubleshooting);
+- today's requests and Cloudflare checks;
+- whether your tagging scripts are up to date, need fixing, or were not found.
+
+Below them:
+
 | Item | Action |
 |---|---|
+| Open log | Opens `proxy.log` in your text editor |
 | Auto-exit when idle (30 min) | Toggle idle auto-exit on/off |
-| Faster Beatport tagging | Send Mp3tag less data from Beatport, in two places. Off by default |
+| Faster Beatport tagging | Send Mp3tag less data from Beatport. Off by default |
 | Check for updates | Toggle the startup version check |
 | Scripts folder | **Find automatically** (the default), or **Choose a folder…** if your scripts are somewhere the proxy cannot guess |
-| Open log | Opens `proxy.log` in your text editor |
 | About | Shows version info. Click anywhere on it, press Escape, or use the close mark to dismiss it |
 | Quit | Shuts down the proxy |
 
@@ -155,7 +184,7 @@ hand or read exactly what changed before trusting it.
 > use scripts of your own.
 
 > **Faster Beatport tagging** is worth turning on if Beatport tagging feels
-> slow. It cuts down what Mp3tag has to work through, in the two places where
+> slow. It cuts down what Mp3tag has to work through, in the places where
 > Beatport sends far more than any tag script uses. It changes no field you get,
 > and the difference is largest on older machines.
 >
@@ -165,6 +194,9 @@ hand or read exactly what changed before trusting it.
 > ever sees it, saving Mp3tag more than a dozen search and replace passes over
 > half a megabyte.
 >
+> *The release page.* About 350 KB, of which the release and its tracks are a
+> few KB. It is cut down the same way.
+>
 > *The search results list.* A Beatport search returns around 150 results, and
 > Beatport now points every one of them at a full 1400x1400 cover, roughly
 > 169 KB each. Mp3tag downloads and decodes all of them just to draw the small
@@ -172,11 +204,11 @@ hand or read exactly what changed before trusting it.
 > enough work to make an older machine struggle. The proxy asks Beatport's own
 > resizer for list-sized covers instead, around 65 times smaller. **The artwork
 > written to your files is not affected**, because that comes from the release
-> or track page, which this never touches.
+> or track itself, which is always kept whole.
 >
-> Release pages, artwork lookups and everything on Traxsource pass through
-> untouched either way. If you have a custom script that reads something outside
-> the track's own data, turn it off.
+> Everything on Traxsource passes through untouched either way. If you have a
+> custom script that reads something on a track or release page beyond the
+> track or release itself, turn it off.
 
 ---
 
@@ -211,11 +243,16 @@ Mp3tag afterwards.
 Check that the script files are in `%APPDATA%\Mp3tag\data\sources\`.
 
 **Still 403 although the proxy is running**: Mp3tag is going to the site
-directly, so the scripts were never pointed at the proxy. Usually that means
+directly, so the scripts were never pointed at the proxy; the tray menu then
+still says **No requests yet** while you tag. Usually that means
 the proxy did not find them. The splash then shows a grey **Tagging scripts
 not found** line, and `proxy.log` lists every folder it looked in. Click that
 line, or use the tray menu, **Scripts folder**, to choose yours, then click
 **Fix tagging scripts…**.
+
+**Bandcamp Search finds nothing**: it needs the proxy running. If it is, look
+at `proxy.log`: a `[bandcamp]` line says how many results came back, and says
+so if Bandcamp answered with its own bot check instead.
 
 **Tray icon not visible**: click the `^` arrow on the taskbar near the clock.
 
