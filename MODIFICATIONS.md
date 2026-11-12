@@ -26,8 +26,8 @@ with `http://127.0.0.1:8787` in specific lines of the script files.
 > fix in this file itself: it tells you on the splash screen and in the tray
 > menu when it finds scripts that need it, and "Fix tagging scripts…" in the
 > tray menu does the work. `mp3tag_scripts_patcher.exe` (on the same download
-> page) is the same thing as a console tool, for anyone whose scripts live
-> outside the default folder. Either way each file is backed up before it is
+> page) is the same thing as a console tool, for anyone who wants a per-file
+> report. Either way each file is backed up before it is
 > touched, and running it again is safe.
 >
 > The manual steps below are kept for people who can't or don't want to run
@@ -164,7 +164,8 @@ every field was renamed or moved. This breaks **`Track Direct.inc`** and
 **`Track Search.inc`** (both fetch a track page to fill in the tag fields),
 with symptoms of empty/wrong `TITLE`, and `ARTIST` mixing in remixer names. It does
 **not** affect `Release Direct.inc` / `Release Search.inc` / `Artwork
-Search.inc`: release pages (`beatport.com/release/...`) were not changed.
+Search.inc`: release pages (`beatport.com/release/...`) were not changed then.
+They were in November 2026, see below.
 
 What moved, for reference: `name`→`track_name`; `id`→`track_id`; `length`
 (an `"m:ss"` string)→`track_length_ms` (milliseconds); `new_release_date`
@@ -442,6 +443,16 @@ track with a remixer, and a third unrelated track): `TITLE`, `ARTIST`,
 `ISRC`, `BPM`, `YEAR`/`DATE`, `PUBLISHER` and all three `BEATPORT_*_URL`
 fields all came back correct in every case.
 
+### 2026-11: release pages lost their track list (no edit)
+
+In November 2026 Beatport stopped putting the track list on release pages.
+`Release Direct.inc` and `Release Search.inc` read it from a fixed place on
+the page, so they picked up the recommended releases there instead, and the
+track list came out wrong. No script edit can fix that, because the list is
+simply not on the page any more. Since v2.8.0 the proxy loads each track's
+own page and puts the list back where the scripts expect it, in the old form,
+so the Release scripts need no changes.
+
 ---
 
 ## Traxsource: Beatport · **Traxsource** · SoundCloud scripts (by Jordi & Claude)
@@ -600,3 +611,7 @@ AFTER:   regexpreplace "<div class=\"cat-rdate\">([^\s<]+)\s+\$verticalBar\(\)\s
 All "Search by…" `.src` files and `.settings` files are used as-is.
 These files build only the query string. The URL is taken from `[IndexUrl]`
 in the `.inc` file, which is already pointed at the proxy by the edits above.
+
+The Bandcamp source, 0.5.0 or later, needs no edits at all: its **Bandcamp
+Search** already goes through the proxy. Without the proxy, 0.5.0 works just
+like 0.4.9, minus that search.
