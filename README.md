@@ -125,7 +125,9 @@ hand or read exactly what changed before trusting it.
 > browser (Edge, Chrome, or Brave) in the background to clear it. The tray tooltip
 > shows *"solving challenge…"* meanwhile. Everything after that is instant, and the
 > brief browser process closes itself. Traxsource can ask for the same check now
-> and then, and the proxy handles it the same way.
+> and then, and the proxy handles it the same way. Mp3tag only waits 12 seconds
+> for an answer, so on a slower PC, where the check takes longer, the proxy asks
+> Mp3tag to hold on until the answer is ready.
 
 > **Beatport releases:** Beatport no longer puts the track list on its release
 > pages. The proxy loads each track's own page and puts the list back, so the
