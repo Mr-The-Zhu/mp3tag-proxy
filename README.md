@@ -256,6 +256,13 @@ line, or use the tray menu, **Scripts folder**, to choose yours, then click
 at `proxy.log`: a `[bandcamp]` line says how many results came back, and says
 so if Bandcamp answered with its own bot check instead.
 
+**Bandcamp Search lists results, but opening one gives 403**: on some PCs
+Bandcamp turns Mp3tag itself away (seen on an older Windows 10), while the
+proxy's own requests get through. Add a line `bandcamp_pages=1` to
+`proxy.cfg` next to the `.exe` and restart the proxy: the results then open
+their pages through the proxy. Bandcamp Album and Track by URL still go
+straight to Bandcamp.
+
 **Tray icon not visible**: click the `^` arrow on the taskbar near the clock.
 
 ---
