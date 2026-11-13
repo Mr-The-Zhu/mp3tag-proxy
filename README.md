@@ -259,9 +259,11 @@ so if Bandcamp answered with its own bot check instead.
 **Bandcamp Search lists results, but opening one gives 403**: on some PCs
 Bandcamp turns Mp3tag itself away (seen on an older Windows 10), while the
 proxy's own requests get through. Add a line `bandcamp_pages=1` to
-`proxy.cfg` next to the `.exe` and restart the proxy: the results then open
-their pages through the proxy. Bandcamp Album and Track by URL still go
-straight to Bandcamp.
+`proxy.cfg` next to the `.exe` and restart the proxy: the results, their
+thumbnails and the cover then all come through the proxy. The Bandcamp scripts
+that look up a URL you give them still go straight to Bandcamp. To send those
+through the proxy too, change `[AlbumUrl]=%s` to
+`[AlbumUrl]=http://127.0.0.1:8787/%s` in each of them.
 
 **Tray icon not visible**: click the `^` arrow on the taskbar near the clock.
 
