@@ -1,22 +1,27 @@
 # Mp3tag Proxy
 
-Fixes **403 Forbidden** errors when using Mp3tag tag-source scripts with
-Beatport and Traxsource, caused by Cloudflare bot protection, and keeps those
-scripts working when the sites change their pages. It also brings back
-Bandcamp search by artist and album name, with release dates.
+A small helper for Mp3tag web sources, for Windows. It runs in the system tray,
+sits between Mp3tag and the sites your tag-source scripts read, and does what
+Mp3tag cannot do on its own:
 
-The proxy runs locally on your machine and sits between Mp3tag and the music
-platforms. It appears as a small icon in the system tray.
+- **Beatport, Traxsource and Qobuz**: gets Mp3tag past the sites' bot
+  protection (Cloudflare and others), so the **403 Forbidden** errors are gone
+- **Beatport and Traxsource**: keeps stevehero's and Jordi's scripts working
+  when the sites change their pages
+- **Bandcamp**: brings back search by artist and album name, with release dates
+
+Other sites can go through it too: see [For script authors](#for-script-authors).
 
 ---
 
 ## Requirements
 
 - Windows 10 / 11 with a Chromium browser: Microsoft Edge (preinstalled),
-  Google Chrome, or Brave, used to clear Beatport's Cloudflare challenge
+  Google Chrome, or Brave, used to pass Cloudflare checks
 - [Mp3tag](https://www.mp3tag.de/), the version your scripts require
-  (stevehero's Beatport v6: **v3.22+**, Traxsource: **v3.26+**, Bandcamp: **v3.22+**)
-- Tag-source scripts for Beatport, Traxsource or Bandcamp (see below)
+  (stevehero's Beatport v6: **v3.22+**, Traxsource: **v3.26+**, Bandcamp: **v3.22+**,
+  Qobuz: **v3.22+**)
+- Tag-source scripts for the sites you tag from (see below)
 
 ---
 
@@ -63,13 +68,19 @@ release dates. Bandcamp's own search page needs JavaScript, which Mp3tag cannot
 run, so this one works only while the proxy is running. Without the proxy,
 0.5.0 works just like 0.4.9, minus Bandcamp Search.
 
+**Qobuz**: GMK's Qobuz scripts, from his thread:  
+[community.mp3tag.de › WS Qobuz](https://community.mp3tag.de/t/60860)
+
+Qobuz turns Mp3tag away on its own, and since version 2026.11.18 these scripts
+go through the proxy by themselves.
+
 Place all script files into Mp3tag's sources folder:
 ```
 %APPDATA%\Mp3tag\data\sources\
 ```
 
-The proxy finds them there, and also in the two other places Mp3tag can keep
-them:
+For the Beatport and Traxsource scripts, which it checks and fixes, the proxy
+looks there and in the two other places Mp3tag can keep them:
 
 - **Microsoft Store version**: on our test PC, which already had the regular
   Mp3tag, it used the same folder as above. Mp3tag's own documentation gives
@@ -80,11 +91,10 @@ them:
   this one when `mp3tag_proxy.exe` is somewhere inside that folder, for
   example in a `data\tools` folder of its own.
 
-If yours are anywhere else, the splash says so in grey when the proxy starts:
-**Tagging scripts not found**. Click that line, or use the tray menu,
-**Scripts folder**, **Choose a folder…**, and tell the proxy once where they
-are. It is saved in `proxy.cfg` as a line like
-`sources=D:\Mp3tag\data\sources`, which you can also add by hand.
+If yours are anywhere else, the splash says so once, in grey, when the proxy
+starts: **No Beatport or Traxsource scripts**. Click that line, or open
+**Settings…** in the tray menu and choose **This folder:**, to tell the proxy
+where they are. If you use neither pack, just ignore it.
 
 ### 3. Edit the script files
 
@@ -93,12 +103,13 @@ needs anything it shows a line on the splash and a **Fix tagging scripts…** it
 in the tray menu. Click either one and it applies every edit they need: proxy
 routing, full-resolution cover art, Beatport's current JSON fix and Traxsource's
 current HTML fix. It keeps a `.bak` of each original first, tells you what it
-changed, and puts the full report in the log.
+changed, and puts the full report in the log. If a script is newer than the
+proxy knows and an edit does not fit, it says which one instead.
 
 The same check runs at every startup, so if either site changes something later
 and an update brings a new fix, the proxy tells you then too.
 
-The Bandcamp scripts need no edits: their search already goes through the proxy.
+The Bandcamp and Qobuz scripts need no edits: they already go through the proxy.
 
 Every edit it makes is also written out step by step in
 [MODIFICATIONS.md](MODIFICATIONS.md), for anyone who would rather apply them by
@@ -114,76 +125,80 @@ hand or read exactly what changed before trusting it.
 
 ## Daily use
 
-1. Double-click `mp3tag_proxy.exe`. A tray icon appears near the clock.
+1. Double-click `mp3tag_proxy.exe`. A tray icon appears near the clock. To
+   have it there all the time, tick **Start with Windows** in **Settings…**.
 2. Use Mp3tag tag sources as usual. Tags are fetched via the proxy.
-3. Right-click the tray icon → **Quit** when done, or leave it running
-   (auto-exits after 30 minutes of inactivity).
+3. Leave it running, or choose **Quit** in its tray menu when done.
 
-> **Beatport note:** Beatport is behind a Cloudflare challenge that needs a real
-> browser to pass. The first Beatport request (and occasionally later, when the
-> clearance expires) takes ~5–10 seconds while the proxy quietly uses a Chromium
-> browser (Edge, Chrome, or Brave) in the background to clear it. The tray tooltip
-> shows *"solving challenge…"* meanwhile. Everything after that is instant, and the
-> brief browser process closes itself. Traxsource can ask for the same check now
-> and then, and the proxy handles it the same way. Mp3tag only waits 12 seconds
-> for an answer, so on a slower PC, where the check takes longer, the proxy asks
-> Mp3tag to hold on until the answer is ready.
+> **Cloudflare checks:** Beatport, and now and then Traxsource, can put a
+> Cloudflare check in front of a page, which needs a real browser to pass. When
+> one comes, the proxy quietly opens Edge, Chrome or Brave off-screen, passes
+> the check on that page, and closes the browser again. That takes about 5–10
+> seconds, longer on a slow connection or an older machine; everything after it
+> is instant until the check expires. Meanwhile the tray menu shows an orange
+> dot and **Passing a Cloudflare check…**. Mp3tag only waits 12 seconds for an
+> answer, so when the check takes longer, the proxy asks Mp3tag to hold on
+> until the answer is ready.
 
 > **Beatport releases:** Beatport no longer puts the track list on its release
 > pages. The proxy loads each track's own page and puts the list back, so the
 > Release scripts work as before, but a release takes a few seconds longer to
 > load than a single track.
 
-> **Other sites:** the proxy is made for the Beatport, Traxsource and Bandcamp
-> scripts, but it can fetch other sites too, for instance while you test a tag
-> source of your own: `http://127.0.0.1:8787/https://www.example.com/...`. To
-> look at a site in a browser, open it as `http://www.example.com.localhost:8787/`
-> instead, which also suits sites built as web apps. Nothing beyond Beatport,
-> Traxsource and Bandcamp is tested or supported.
-
 ---
 
 ## Tray menu
 
-At the top, four grey lines show how things stand:
+A left or right click on the tray icon opens it.
 
-- the version and the address the proxy runs on, or **Solving the Cloudflare
-  check…** while one runs;
-- when the last request came in. If this still says **No requests yet** while
-  you tag, Mp3tag is not going through the proxy, which usually means the
-  scripts were never pointed at it (see Troubleshooting);
-- today's requests and Cloudflare checks;
-- whether your tagging scripts are up to date, need fixing, or were not found.
+- The first line, with the icon, is the proxy's name and version: click it for
+  **About**.
+- The second line says how things stand, with a coloured dot: green when all is
+  well, orange while a Cloudflare check runs, red when a check failed or no
+  Edge or Chrome was found. Click it to open the log, which has the detail.
+- Two grey lines follow. The first shows today's requests and when the last
+  one came in: if it still says **No requests yet** while you tag, Mp3tag is
+  not going through the proxy (see Troubleshooting). The second says whether
+  the Beatport and Traxsource scripts are up to date or need fixing.
 
 Below them:
 
 | Item | Action |
 |---|---|
+| Update available | Shown when there is a newer release: opens its download page |
+| Fix tagging scripts… | Shown when the scripts need an edit: applies it (see step 3) |
 | Open log | Opens `proxy.log` in your text editor |
-| Auto-exit when idle (30 min) | Toggle idle auto-exit on/off |
-| Faster Beatport tagging | Send Mp3tag less data from Beatport. Off by default |
-| Check for updates | Toggle the startup version check |
-| Scripts folder | **Find automatically** (the default), or **Choose a folder…** if your scripts are somewhere the proxy cannot guess |
-| About | Shows version info. Click anywhere on it, press Escape, or use the close mark to dismiss it |
+| Open proxy folder | Opens the folder with `proxy.cfg` and `proxy.log` in it |
+| Settings… | Every setting, see below |
+| About | Version and address. Click anywhere on it, press Escape, or use the close mark to dismiss it |
 | Quit | Shuts down the proxy |
 
 > On startup the proxy checks GitHub for a newer release (version numbers only,
-> nothing personal is sent). If one is available, the About splash shows it and the
-> tray gets an **Update available** item. Turn the check off with the
-> **Check for updates** toggle.
+> nothing personal is sent). If one is available, the splash shows it and the
+> menu gets an **Update available** item. The check can be turned off in
+> Settings.
 
-> The proxy also checks stevehero's Beatport scripts and Jordi's Traxsource
-> scripts (whichever you have) on startup. If they need an edit, a red line
-> appears on the splash naming the pack, and the tray gets a **Fix tagging
-> scripts…** item. Clicking that line, or that item, applies the fixes there and
-> then, keeping a `.bak` of each original, and shows what it changed. The full
-> per-file report goes to the log. Clicking anywhere else on the splash only
-> closes it.
->
-> All of this stays hidden when there is nothing to do. If the proxy finds
-> neither set of scripts anywhere, the splash shows a grey **Tagging scripts not
-> found** line instead: click it to choose their folder, or ignore it if you
-> use scripts of your own.
+---
+
+## Settings
+
+**Settings…** in the tray menu opens a window with every setting, each with a
+line saying what it does. They are kept in `proxy.cfg` next to the `.exe`, which
+you can also edit by hand while the proxy is not running.
+
+| Setting | What it does | In `proxy.cfg` |
+|---|---|---|
+| Start with Windows | Starts the proxy quietly in the tray when you sign in. It uses your own startup list, so Windows' **Settings → Apps → Startup** shows it and can turn it off too | (Windows' own) |
+| Close after … minutes without requests | Closes the proxy after 15, 30, 60 or 120 minutes without a request. Off by default, and greyed out while Start with Windows is on | `auto_exit=1`, `auto_exit_minutes=30` |
+| Faster Beatport tagging | Sends Mp3tag only what the scripts read from Beatport (see below). Off by default | `trim_pages=1` |
+| Open Bandcamp search results through the proxy | Only for PCs where Bandcamp turns Mp3tag itself away (see Troubleshooting). Off by default | `bandcamp_pages=1` |
+| Beatport and Traxsource scripts | **Find their folder automatically** (the default), or **This folder:** if they are somewhere the proxy cannot guess | `sources=D:\Mp3tag\data\sources` |
+| Check for a new version at startup | On by default | `updates_enabled=0` to turn it off |
+| Port | 8787 unless that one is taken. Used from the next start, and every script that uses the proxy must use the same port | `port=8787` |
+
+Up to 2.8.4 the proxy closed itself after 30 minutes without requests, and
+Mp3tag then found nothing to talk to. From 3.0 it stays until you quit it,
+unless you turn that on again.
 
 > **Faster Beatport tagging** is worth turning on if Beatport tagging feels
 > slow. It cuts down what Mp3tag has to work through, in the places where
@@ -214,19 +229,64 @@ Below them:
 
 ---
 
+## For script authors
+
+If a site turns Mp3tag away but opens fine in a browser, your script can go
+through the proxy: put `http://127.0.0.1:8787/` in front of the site's
+address, for instance
+
+```
+[IndexUrl]=http://127.0.0.1:8787/https://www.example.com/search?q=%s
+```
+
+and do the same in `[AlbumUrl]` if the script opens result pages too. The
+proxy fetches the page looking like a real browser and, if Cloudflare asks
+for its check, passes it the way it does for Beatport. GMK's Qobuz scripts
+work this way.
+
+- **Full addresses:** always give the whole address after the proxy's, with
+  `https://`. A bare path (`http://127.0.0.1:8787/search?...`) goes to
+  Beatport, because that is how stevehero's scripts use the proxy.
+- **Request headers:** some APIs want a key in a header, which Mp3tag scripts
+  cannot send. Through the proxy they can: add `proxy_header_<Name>=<value>` to
+  the address, for example `&proxy_header_X-API-Key=<your key>`, and the proxy
+  takes it out of the address and sends it as the header `<Name>` instead.
+  Requests go out looking like a browser, so an API that picks its format from
+  `Accept` may need `&proxy_header_Accept=application/json` as well. Header
+  values never show up in `proxy.log`.
+- **Slow answers:** Mp3tag gives up on a request after 12 seconds. When an
+  answer takes longer, the proxy asks Mp3tag to hold on until it is ready, so a
+  script needs nothing for that.
+- **Looking at a site in a browser:** open it as
+  `http://www.example.com.localhost:8787/` rather than with the proxy's address
+  in front. The page then keeps its own paths, which suits sites built as web
+  apps.
+
+The proxy is made for the sites named at the top. Others may well work too
+(Qobuz started that way); if one does not, tell me on the forum.
+
+---
+
 ## Troubleshooting
 
-**403 Forbidden**: proxy isn't running. Double-click `mp3tag_proxy.exe`.
-Also check that no VPN is blocking `127.0.0.1`.
+**Mp3tag cannot connect (error 12029)**: the proxy is not running. Start
+`mp3tag_proxy.exe`, or tick **Start with Windows** in Settings so it is always
+there. Also check that no VPN or firewall is blocking `127.0.0.1`.
 
-**Beatport is slow on the first request**: that's expected. The proxy is using
-Edge, Chrome or Brave in the background to clear Cloudflare's challenge
-(~5–10 s, longer on a slow connection or an older machine); it's cached
+**403 Forbidden**: either Mp3tag went to the site directly rather than through
+the proxy (see **Still 403 although the proxy is running** below), or the
+site's check could not be passed: the tray menu then shows a red dot, and
+`proxy.log` the reason.
+
+**Beatport is slow on the first request**: that's expected when a Cloudflare
+check comes. The proxy is using Edge, Chrome or Brave in the background to pass
+it (about 5–10 s, longer on a slow connection or an older machine); it's kept
 afterwards, so following requests are fast.
 
-**Connection error / no tray icon**: proxy failed to start. Check `proxy.log`
-next to the `.exe`. Port 8787 may be in use by another application (see below to
-change it).
+**No tray icon**: the proxy did not start, or has been closed. Check `proxy.log`
+in its folder. Port 8787 may be in use by another program: choose another one
+in Settings (see **Changing the port**). If **Close after … minutes** is on in
+Settings, the proxy also closes itself after that long without requests.
 
 **The proxy disappears while tagging** (Mp3tag shows error 12030): start it
 again and look at the top of the new session in `proxy.log`. If the proxy
@@ -236,21 +296,23 @@ security software reacting to the hidden browser. The `[clearance]` lines just
 before show which step it was on. Please include that part of the log when you
 report it.
 
-**Changing the port**: if 8787 is blocked or taken, create/edit `proxy.cfg` next
-to the `.exe` and add a line like `port=9000`. You must also change the port in
-your **script URLs** (`http://127.0.0.1:9000/…`) to match. Restart the proxy and
-Mp3tag afterwards.
+**Changing the port**: if 8787 is blocked or taken, choose another one in
+Settings, or add a line like `port=9000` to `proxy.cfg`. It is used from the
+next start. Every script that uses the proxy must then say
+`http://127.0.0.1:9000/…` instead. The proxy's own fixes point at 8787, so on
+any other port it leaves the Beatport and Traxsource scripts alone: make the
+edits by hand, as [MODIFICATIONS.md](MODIFICATIONS.md) describes, with your port.
 
 **No results in Mp3tag**: fully exit Mp3tag (File → Exit) and reopen.
 Check that the script files are in `%APPDATA%\Mp3tag\data\sources\`.
 
 **Still 403 although the proxy is running**: Mp3tag is going to the site
 directly, so the scripts were never pointed at the proxy; the tray menu then
-still says **No requests yet** while you tag. Usually that means
-the proxy did not find them. The splash then shows a grey **Tagging scripts
-not found** line, and `proxy.log` lists every folder it looked in. Click that
-line, or use the tray menu, **Scripts folder**, to choose yours, then click
-**Fix tagging scripts…**.
+still says **No requests yet** while you tag. For the Beatport and Traxsource
+scripts that usually means the proxy did not find them: `proxy.log` lists every
+folder it looked in. Open **Settings…**, choose **This folder:** and pick yours,
+then click **Fix tagging scripts…**. For other scripts, check that their
+addresses start with `http://127.0.0.1:8787/`.
 
 **Bandcamp Search finds nothing**: it needs the proxy running. If it is, look
 at `proxy.log`: a `[bandcamp]` line says how many results came back, and says
@@ -258,18 +320,21 @@ so if Bandcamp answered with its own bot check instead.
 
 **Bandcamp Search lists results, but opening one gives 403**: on some PCs
 Bandcamp turns Mp3tag itself away (seen on an older Windows 10), while the
-proxy's own requests get through. Add a line `bandcamp_pages=1` to
-`proxy.cfg` next to the `.exe` and restart the proxy: the results, their
-thumbnails and the cover then all come through the proxy. The Bandcamp scripts
-that look up a URL you give them still go straight to Bandcamp. To send those
-through the proxy too, change `[AlbumUrl]=%s` to
-`[AlbumUrl]=http://127.0.0.1:8787/%s` in each of them.
+proxy's own requests get through. Tick **Open Bandcamp search results through
+the proxy** in Settings: the results, their thumbnails and the cover then all
+come through the proxy. The Bandcamp scripts that look up a URL you give them
+still go straight to Bandcamp. To send those through the proxy too, change
+`[AlbumUrl]=%s` to `[AlbumUrl]=http://127.0.0.1:8787/%s` in each of them.
 
 **Tray icon not visible**: click the `^` arrow on the taskbar near the clock.
 
 ---
 
 ## Security
+
+The proxy only listens on your own computer (`127.0.0.1`), and only answers
+Mp3tag and pages opened through it: a web page from another site cannot use it
+to reach your network or other sites.
 
 Some antivirus engines flag `mp3tag_proxy.exe` on generic ML heuristics (e.g.
 Microsoft Defender's `Wacatac.ml`), triggered by behavior the tool genuinely
