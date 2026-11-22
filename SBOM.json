@@ -3,11 +3,11 @@
   "specVersion": "1.5",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-11-19T18:16:30Z",
+    "timestamp": "2026-11-20T08:50:42Z",
     "component": {
       "type": "application",
       "name": "mp3tag_proxy.exe",
-      "version": "3.0.0"
+      "version": "3.0.1"
     },
     "properties": [
       {
