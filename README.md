@@ -140,6 +140,10 @@ hand or read exactly what changed before trusting it.
 > answer, so when the check takes longer, the proxy asks Mp3tag to hold on
 > until the answer is ready.
 
+> **Preview:** the **Preview** button in the Beatport and Traxsource scripts
+> opens the page on the site itself, in your browser. The proxy hands Mp3tag
+> pages cut down to what the scripts read, which a browser could not show.
+
 > **Beatport releases:** Beatport no longer puts the track list on its release
 > pages. The proxy loads each track's own page and puts the list back, so the
 > Release scripts work as before, but a release takes a few seconds longer to
@@ -156,10 +160,11 @@ A left or right click on the tray icon opens it.
 - The second line says how things stand, with a coloured dot: green when all is
   well, orange while a Cloudflare check runs, red when a check failed or no
   Edge or Chrome was found. Click it to open the log, which has the detail.
-- Two grey lines follow. The first shows today's requests and when the last
-  one came in: if it still says **No requests yet** while you tag, Mp3tag is
-  not going through the proxy (see Troubleshooting). The second says whether
-  the Beatport and Traxsource scripts are up to date or need fixing.
+- Grey lines follow: today's requests (in brackets, how many needed a
+  Cloudflare check), when the last one came in, and whether the Beatport and
+  Traxsource scripts are up to date or need fixing. If it still says **No
+  requests yet** while you tag, Mp3tag is not going through the proxy (see
+  Troubleshooting).
 
 Below them:
 
