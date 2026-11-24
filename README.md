@@ -201,6 +201,10 @@ you can also edit by hand while the proxy is not running.
 | Check for a new version at startup | On by default | `updates_enabled=0` to turn it off |
 | Port | 8787 unless that one is taken. Used from the next start, and every script that uses the proxy must use the same port | `port=8787` |
 
+One more setting lives in `proxy.cfg` alone: `browser_flags`, extra switches
+for the browser that passes Cloudflare checks. It is for setups like Wine (see
+Troubleshooting); on Windows itself nothing needs it.
+
 Up to 2.8.4 the proxy closed itself after 30 minutes without requests, and
 Mp3tag then found nothing to talk to. From 3.0 it stays until you quit it,
 unless you turn that on again.
@@ -287,6 +291,14 @@ site's check could not be passed: the tray menu then shows a red dot, and
 check comes. The proxy is using Edge, Chrome or Brave in the background to pass
 it (about 5–10 s, longer on a slow connection or an older machine); it's kept
 afterwards, so following requests are fast.
+
+**Cloudflare checks fail under Wine or Winlator**: the proxy runs there, and
+starts the browser for the check without Chrome's sandbox, which Wine does not
+support. If the check still fails, the browser may need other switches in that
+setup. Put them on one line in `proxy.cfg`, the way they go in a browser
+shortcut, for example `browser_flags=--switch-one --switch-two=value`, and
+start the proxy again. `proxy.log` lists the switches it used. Those the proxy
+sets itself (the browser's profile folder and debugging port) are left out.
 
 **No tray icon**: the proxy did not start, or has been closed. Check `proxy.log`
 in its folder. Port 8787 may be in use by another program: choose another one
